@@ -1,4 +1,50 @@
 {% extends "PresupuestoBundle::base.html.twig" %}
+
+{% block titulo %}
+Presupuestos del Sistema
+<a class="btn btn-primary btn-large pull-right" href="#">Crear Presupuesto</a>
+{% endblock titulo %}
+
 {% block cuerpo %}
 <h3>Este será el listado</h3>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Total Bs</th>
+            <th>Imprimir</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th colspan="100">
+            </th>
+        </tr>
+    </tfoot>
+    <tbody>
+        {% for item in presupuestos %}
+            <tr>
+                <td>{{ item.titulo|escape }}</td>
+                <td>{{ item.total|escape }}</td>
+                <td class="link-imagen">
+                    <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
+                </td>
+                <td class="link-imagen">
+                    <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
+                </td>
+                <td class="link-imagen">
+                    <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/eliminar.png") }}" /></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="100">
+                    No exisen Presupuestos
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock cuerpo %}
