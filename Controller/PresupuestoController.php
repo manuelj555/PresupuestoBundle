@@ -7,13 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class PresupuestoController extends Controller
 {
 
-    public function listadoAction()
+    public function listadoAction($page)
     {
         $query = $this->getDoctrine()->getEntityManager()
                 ->createQuery("SELECT p FROM PresupuestoBundle:Presupuestos p");
 
-        $presupuestos = $this->get("knp_paginator")->paginate($query
-                , $this->getRequest()->query->get("page", 1));
+        $presupuestos = $this->get("knp_paginator")->paginate($query, $page);
 
         return $this->render("PresupuestoBundle:Presupuesto:listado.html.twig", array(
                     'presupuestos' => $presupuestos,

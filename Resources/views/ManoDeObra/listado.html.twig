@@ -1,17 +1,20 @@
 {% extends "PresupuestoBundle::base.html.twig" %}
 
 {% block titulo %}
-Presupuestos del Sistema
-<a class="btn btn-primary btn-large pull-right" href="#">Crear Presupuesto</a>
+Manos de Obras del Sistema
 {% endblock titulo %}
 
 {% block cuerpo %}
+<div id="resultado"></div>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Título</th>
-            <th>Total Bs</th>
-            <th>Imprimir</th>
+            <th>Descripción</th>
+            <th>U/medidad</th>
+            <th>Tipo de Trabajo</th>
+            <th>Precio</th>
+            <th>Creada</th>
+            <th>Actualizada</th>
             <th>Editar</th>
             <th>Eliminar</th>
         </tr>
@@ -19,18 +22,19 @@ Presupuestos del Sistema
     <tfoot>
         <tr>
             <th colspan="100">
-                {{ knp_pagination_render(presupuestos) }}
+                
             </th>
         </tr>
     </tfoot>
     <tbody>
-        {% for item in presupuestos %}
+        {% for item in manosdeobra %}
             <tr>
-                <td>{{ item.titulo|escape }}</td>
-                <td>{{ item.total|escape }}</td>
-                <td class="link-imagen">
-                    <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
-                </td>
+                <td>{{ item.descripcion|escape }}</td>
+                <td>{{ item.medidas.medida|escape }}</td>
+                <td>{{ item.tiposDeObras.nombre|escape }}</td>
+                <td>{{ item.precio|number_format(2) }} Bs</td>
+                <td>{{ item.fechaAt|date("d-m-Y") }}</td>
+                <td>{{ item.fechaIn|date("d-m-Y") }}</td>
                 <td class="link-imagen">
                     <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
                 </td>
@@ -41,10 +45,12 @@ Presupuestos del Sistema
         {% else %}
             <tr>
                 <td colspan="100">
-                    No exisen Presupuestos
+                    No exisen Manos de Obra
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+{{ knp_pagination_render(manosdeobra) }}
 {% endblock cuerpo %}

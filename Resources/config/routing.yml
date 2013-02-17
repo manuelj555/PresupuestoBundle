@@ -1,3 +1,11 @@
 presupuesto_listado:
-    pattern:  /
-    defaults: { _controller: PresupuestoBundle:Presupuesto:listado }
+    pattern:  /{page}
+    defaults: { _controller: PresupuestoBundle:Presupuesto:listado, page: 1 }
+    requirements:
+        page: \d+
+    
+manosdeobra_listado:
+    pattern:  /manosdeobra/{page}
+    defaults: { _controller: PresupuestoBundle:ManoDeObra:listado, page: 1 }
+    requirements:
+        page: \d+

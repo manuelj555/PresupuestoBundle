@@ -51,9 +51,9 @@ class ManosDeObra
     private $fechaIn;
 
     /**
-     * @var \ManosDeObra
+     * @var TiposDeObras
      *
-     * @ORM\ManyToOne(targetEntity="ManosDeObra")
+     * @ORM\ManyToOne(targetEntity="TiposDeObras")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="tipos_de_obras_id", referencedColumnName="id")
      * })
@@ -173,26 +173,23 @@ class ManosDeObra
     }
 
     /**
-     * Set tiposDeObras
-     *
-     * @param \K2\PresupuestoBundle\Entity\ManosDeObra $tiposDeObras
-     * @return ManosDeObra
-     */
-    public function setTiposDeObras(\K2\PresupuestoBundle\Entity\ManosDeObra $tiposDeObras = null)
-    {
-        $this->tiposDeObras = $tiposDeObras;
-
-        return $this;
-    }
-
-    /**
-     * Get tiposDeObras
-     *
-     * @return \K2\PresupuestoBundle\Entity\ManosDeObra 
+     * 
+     * @return TiposDeObras
      */
     public function getTiposDeObras()
     {
         return $this->tiposDeObras;
+    }
+
+    /**
+     * 
+     * @param \K2\PresupuestoBundle\Entity\TiposDeObras $tiposDeObras
+     */
+    public function setTiposDeObras(TiposDeObras $tiposDeObras)
+    {
+        $this->tiposDeObras = $tiposDeObras;
+
+        return $this;
     }
 
     /**
