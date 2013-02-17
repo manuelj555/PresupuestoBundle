@@ -1,0 +1,72 @@
+body{
+    padding-top: 70px;
+}
+
+.nav img{
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+table .link-imagen{
+    text-align: center !important;
+    width: 40px;
+}
+
+table .link-imagen img{
+    width: 20px;
+}
+
+form .control-group{
+    margin-bottom: 5px !important;
+}
+
+.modal form{
+    margin: 0px !important;
+}
+
+table.presupuesto img{
+    width: 20px;
+}
+table.presupuesto td{
+    padding: 0px;
+    z-index: 1;
+    background-color: transparent !important;
+}
+
+table.presupuesto input{
+    margin-bottom: 0px;
+    z-index: 1;
+}
+table.presupuesto  tbody input{
+    border-style: none;
+    background-color: transparent;    
+}
+
+td.sub_total{
+    padding-right: 20px !important;
+    text-align: right !important;
+}
+
+.fondo-sortable-elemet{
+    height: 50px;
+    width: 100%;
+}
+
+table.presupuesto tbody tr:hover{
+    box-shadow: 0px 0px 20px #222;
+    margin-top: -10px;
+}
+table.presupuesto tbody tr:hover td{
+    margin-top: -10px;
+    padding: 5px;
+    z-index: 10;
+    background-color: #eee !important;
+}
+table.presupuesto tbody tr:hover input{
+    border-style: solid;
+    background-color: white;
+}
+table.presupuesto tfoot td{
+    padding: 3px;
+}
