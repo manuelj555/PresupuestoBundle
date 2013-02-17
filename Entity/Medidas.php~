@@ -1,0 +1,53 @@
+<?php
+
+namespace K2\PresupuestoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Medidas
+ *
+ * @ORM\Table(name="medidas")
+ * @ORM\Entity
+ */
+class Medidas
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="medida", type="string", length=30, nullable=false)
+     */
+    private $medida;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="text", nullable=true)
+     */
+    private $descripcion;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_at", type="date", nullable=true)
+     */
+    private $fechaAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_in", type="date", nullable=true)
+     */
+    private $fechaIn;
+
+
+}

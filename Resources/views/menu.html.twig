@@ -1,0 +1,45 @@
+{#$class_1 = $class_2 = $class_3 = NULL;
+switch (Router::get('controller')) {
+    case 'presupuestos':
+        $class_1 = 'active';
+        break;
+    case 'manosdeobra':
+        $class_2 = 'active';
+        break;
+    case 'materiales':
+        $class_2 = 'active';
+        break;
+}#}
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+</a>
+<div class="nav-collapse pull-right"> 
+    <ul class="nav">
+        <li class="<?php echo $class_1 ?>">
+            <a href="{{ path("presupuesto_listado") }}">
+                <img src="{{ asset("bundles/presupuesto/img/figuras/file.png") }}" />
+                Presupuestos
+            </a>
+        </li>
+        <li class="<?php echo $class_2 ?> dropdown" id="li_drop">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                Manos de Obra
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <?php echo Ajax::link('manosdeobra/agregar', 'Agregar','contenido-ajax') ?>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <?php echo Html::link('manosdeobra', 'Ver Todas') ?>
+                </li>
+            </ul>
+        </li>
+        <li class="<?php echo $class_3 ?>">
+            <?php echo Html::link('materiales', Html::img('figuras/material.png') . 'Materiales') ?>
+        </li>
+    </ul>
+</div>

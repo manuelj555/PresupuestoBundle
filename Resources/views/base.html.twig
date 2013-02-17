@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>.::Sistema de Presupuestos de Trabajo::.</title>
+        {% block stylesheets %}
+            {% stylesheets 'bundles/presupuesto/css/bootstrap.min.css' 
+                           'bundles/presupuesto/css/bootstrap-responsive.css' 
+                           'bundles/presupuesto/css/jgrowl/jgrowl.css' 
+                           filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+	    {% endstylesheets %}
+        {% endblock %}
+        {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="{{ path("presupuesto_listado") }}">Control de Presupuestos</a>
+                    {% include 'PresupuestoBundle::menu.html.twig' %}
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="hero-unit1">
+                {% block cuerpo "" %}
+                </div>
+                <hr/>
+                <footer>
+                </footer>
+        </div>
+        <div id="contenido-ajax"></div>
+        <script type="text/javascript" >var PUBLIC_PATH = "<?php echo PUBLIC_PATH ?>";</script>
+        {% block javascripts %}
+            {% javascripts 'bundles/presupuesto/js/jquery/jquery-1.7.min.js' 
+                           'bundles/presupuesto/js/backbone/underscore-min.js'
+                           'bundles/presupuesto/js/backbone/backbone-min.js'
+                           'bundles/presupuesto/js/backbone/backbone_relational.js'
+                           'bundles/presupuesto/js/jquery/jquery.kumbiaphp.js'
+                           'bundles/presupuesto/js/bootstrap/bootstrap.min.js'
+                           'bundles/presupuesto/js/jgrowl/jgrowl.js'
+                           'bundles/presupuesto/js/mensajes.js'
+            %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+	    {% endjavascripts %}
+        {% endblock %}
+    </body>
+</html>

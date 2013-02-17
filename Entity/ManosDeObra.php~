@@ -1,0 +1,73 @@
+<?php
+
+namespace K2\PresupuestoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ManosDeObra
+ *
+ * @ORM\Table(name="manos_de_obra")
+ * @ORM\Entity
+ */
+class ManosDeObra
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=300, nullable=false)
+     */
+    private $descripcion;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio", type="float", nullable=false)
+     */
+    private $precio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_at", type="date", nullable=true)
+     */
+    private $fechaAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_in", type="date", nullable=true)
+     */
+    private $fechaIn;
+
+    /**
+     * @var \ManosDeObra
+     *
+     * @ORM\ManyToOne(targetEntity="ManosDeObra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tipos_de_obras_id", referencedColumnName="id")
+     * })
+     */
+    private $tiposDeObras;
+
+    /**
+     * @var \Medidas
+     *
+     * @ORM\ManyToOne(targetEntity="Medidas")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="medidas_id", referencedColumnName="id")
+     * })
+     */
+    private $medidas;
+
+
+}

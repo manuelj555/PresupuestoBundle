@@ -1,0 +1,3 @@
+presupuesto_listado:
+    pattern:  /
+    defaults: { _controller: PresupuestoBundle:Presupuesto:listado }
