@@ -30,7 +30,7 @@ switch (Router::get('controller')) {
             </a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="#">Agregar</a>
+                    <a href="{{ path("manosdeobra_agregar") }}" class="ajax" data-res="#contenido-ajax">Agregar</a>
                     <?php echo Ajax::link('manosdeobra/agregar', 'Agregar','contenido-ajax') ?>
                 </li>
                 <li class="divider"></li>

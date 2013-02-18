@@ -5,7 +5,8 @@ namespace K2\PresupuestoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
-use K2\PresupuestoBundle\Util;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
 
 class ManoDeObraController extends Controller
 {
@@ -31,12 +32,26 @@ class ManoDeObraController extends Controller
         $manoDeObra = new ManosDeObra();
 
         $form = $this->createForm(new ManoDeObraForm(), $manoDeObra);
-        
-        if($this->getRequest()->isMethod('POST')){
+
+        if ($this->getRequest()->isMethod('POST')) {
             $form->bind($this->getRequest());
-            var_dump($manoDeObra);
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($manoDeObra);
+                $em->flush();
+            }
+            $controller = $this;
+            return $this->get('k2_view_selector')->option(
+                            function() use ($form, $controller) {
+                                return $controller->agregarResponse($form);
+                            }, "PresupuestoBundle:ManoDeObra:agregar_post.html.ajax");
         }
 
+        return $this->agregarResponse($form);
+    }
+
+    public function agregarResponse($form)
+    {
         $view = $this->get('k2_view_selector')
                 ->select("PresupuestoBundle:ManoDeObra:agregar");
 

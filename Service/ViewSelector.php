@@ -30,4 +30,13 @@ class ViewSelector
         return $view . '.html.twig';
     }
 
+    public function option($normal, $ajax)
+    {
+        if ($this->container->get('request')->isXmlHttpRequest()) {
+            return is_callable($normal) ? call_user_func($normal, $this->container) : $normal;
+        } else {
+            return is_callable($ajax) ? call_user_func($ajax, $this->container) : $ajax;
+        }
+    }
+
 }
