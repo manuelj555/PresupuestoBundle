@@ -1,0 +1,12 @@
+{% extends "PresupuestoBundle::base.html.twig" %}
+
+{% form_theme form 'PresupuestoBundle:Form:fields.html.twig' %}
+
+{% block titulo "Agregar Mano de Obra" %}
+
+{% block cuerpo %}
+<form method="post" action="{{ path(app.request.attributes.get('_route')) }}" class="form-horizontal">
+{{ form_widget(form) }}
+        <input type="submit" class="btn" value="Guardar" />
+</form>
+{% endblock cuerpo %}

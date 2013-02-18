@@ -5,7 +5,7 @@
         <title>.::Sistema de Presupuestos de Trabajo::.</title>
         {% block stylesheets %}
             {% stylesheets 'bundles/presupuesto/css/bootstrap.min.css' 
-                           'bundles/presupuesto/css/bootstrap-responsive.css' 
+                           'bundles/presupuesto/css/bootstrap-responsive.min.css' 
                            'bundles/presupuesto/css/jgrowl/jgrowl.css' 
                            'bundles/presupuesto/css/estilos.css' 
                            filter='cssrewrite' %}
@@ -15,7 +15,7 @@
         {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
     </head>
     <body>
-        <div class="navbar navbar-fixed-top">
+        <div class="navbar navbar-fixed-top navbar-inverse">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="{{ path("presupuesto_listado") }}">Control de Presupuestos</a>
@@ -40,8 +40,7 @@
                            'bundles/presupuesto/js/backbone/underscore-min.js'
                            'bundles/presupuesto/js/backbone/backbone-min.js'
                            'bundles/presupuesto/js/backbone/backbone_relational.js'
-                           'bundles/presupuesto/js/jquery/jquery.kumbiaphp.js'
-                           'bundles/presupuesto/js/bootstrap/bootstrap.min.js'
+                           'bundles/presupuesto/js/bootstrap.min.js'
                            'bundles/presupuesto/js/jgrowl/jgrowl.js'
                            'bundles/presupuesto/js/mensajes.js'
             %}

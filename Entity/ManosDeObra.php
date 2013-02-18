@@ -70,6 +70,11 @@ class ManosDeObra
      */
     private $medidas;
 
+    function __construct()
+    {
+        $this->fechaAt = $this->fechaIn = new \DateTime('now');
+    }
+
     /**
      * Get id
      *

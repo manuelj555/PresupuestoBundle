@@ -9,3 +9,6 @@ manosdeobra_listado:
     defaults: { _controller: PresupuestoBundle:ManoDeObra:listado, page: 1 }
     requirements:
         page: \d+
+manosdeobra_agregar:
+    pattern:  /manosdeobra/agregar
+    defaults: { _controller: PresupuestoBundle:ManoDeObra:agregar }

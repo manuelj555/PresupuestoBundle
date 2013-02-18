@@ -3,6 +3,9 @@
 namespace K2\PresupuestoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use K2\PresupuestoBundle\Entity\ManosDeObra;
+use K2\PresupuestoBundle\Form\ManoDeObraForm;
+use K2\PresupuestoBundle\Util;
 
 class ManoDeObraController extends Controller
 {
@@ -20,6 +23,25 @@ class ManoDeObraController extends Controller
         return $this->render("PresupuestoBundle:ManoDeObra:listado.html.twig"
                         , array(
                     'manosdeobra' => $registros,
+                ));
+    }
+
+    public function agregarAction()
+    {
+        $manoDeObra = new ManosDeObra();
+
+        $form = $this->createForm(new ManoDeObraForm(), $manoDeObra);
+        
+        if($this->getRequest()->isMethod('POST')){
+            $form->bind($this->getRequest());
+            var_dump($manoDeObra);
+        }
+
+        $view = $this->get('k2_view_selector')
+                ->select("PresupuestoBundle:ManoDeObra:agregar");
+
+        return $this->render($view, array(
+                    'form' => $form->createView(),
                 ));
     }
 
