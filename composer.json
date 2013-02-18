@@ -3,7 +3,7 @@
     "description": "Bundle para la creación de presupuestos de trabajos de construcción",
     "require": {
         "php": ">=5.3.3",
-        "knplabs/knp-paginator-bundle": "dev-master"
+        "knplabs/knp-paginator-bundle": "2.3.*@dev"
     },
     "scripts": {
         "post-install-cmd": [
