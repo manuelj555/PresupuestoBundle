@@ -23,6 +23,9 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
     },
+    "autoload":{
+        "psr-0": { "K2\\PresupuestoBundle" : "" }
+    },
     "target-dir": "K2/PresupuestoBundle",
     "minimum-stability": "dev"
 }
