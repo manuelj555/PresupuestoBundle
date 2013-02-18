@@ -22,5 +22,6 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
-    }
+    },
+    "minimum-stability": "dev"
 }
