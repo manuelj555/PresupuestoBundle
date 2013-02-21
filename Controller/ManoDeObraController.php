@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
 use K2\PresupuestoBundle\Response\ErrorResponse;
+use K2\PresupuestoBundle\Response\SuccessResponse;
 
 class ManoDeObraController extends Controller
 {
@@ -38,6 +39,7 @@ class ManoDeObraController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($manoDeObra);
                 $em->flush();
+                return new SuccessResponse("La Mano de Obra se Guardó con exito");
             }else{
                 return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
             }

@@ -227,9 +227,9 @@ class ManosDeObra
 
     public function esPrecioFloat(ExecutionContext $context)
     {
-        if (!is_float($this->getPrecio())) {
-            $context->addViolationAtPath("precio", "El precio debe ser un número válido");
-        }
+//        if (!((float) $this->getPrecio())) {
+//            $context->addViolationAtPath("precio", "El precio debe ser un número válido");
+//        }
     }
 
 }
