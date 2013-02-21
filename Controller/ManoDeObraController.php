@@ -5,8 +5,7 @@ namespace K2\PresupuestoBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use K2\PresupuestoBundle\Response\ErrorResponse;
 
 class ManoDeObraController extends Controller
 {
@@ -40,10 +39,8 @@ class ManoDeObraController extends Controller
                 $em->persist($manoDeObra);
                 $em->flush();
             }else{
-                return new Response($form->getErrorsAsString());
-                return new JsonResponse($form->getErrors());
+                return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
             }
-                return new Response($form->getErrorsAsString());
         }
 
         return $this->agregarResponse($form);

@@ -9,9 +9,21 @@ $("body").on('submit', "form.ajax", function(event) {
         url: $(this).attr("action"),
         data: $(this).serialize(),
         type: $(this).attr("method"),
-        success: function(response){
+        dataType: 'jsonp',
+        jsonpCallback: 'alertMessage',
+        contentType: "application/json",
+        success: function(response) {
             content.html(response)
         }
     })
 })
 
+function alertMessage(messages)
+{
+    console.log(messages)    
+}
+
+function alertFormError(messages)
+{
+    console.log(messages)
+}
