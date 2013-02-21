@@ -3,10 +3,13 @@
 namespace K2\PresupuestoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContext;
 
 /**
  * ManosDeObra
  *
+ * @Assert\Callback(methods={"esPrecioFloat"})
  * @ORM\Table(name="manos_de_obra")
  * @ORM\Entity
  */
@@ -26,6 +29,7 @@ class ManosDeObra
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=300, nullable=false)
+     * @Assert\NotBlank(message="La descripción no puede estar vacía")
      */
     private $descripcion;
 
@@ -33,6 +37,7 @@ class ManosDeObra
      * @var float
      *
      * @ORM\Column(name="precio", type="float", nullable=false)
+     * @Assert\NotBlank(message="El Precio no puede estar vacío")
      */
     private $precio;
 
@@ -218,6 +223,13 @@ class ManosDeObra
     public function getMedidas()
     {
         return $this->medidas;
+    }
+
+    public function esPrecioFloat(ExecutionContext $context)
+    {
+        if (!is_float($this->getPrecio())) {
+            $context->addViolationAtPath("precio", "El precio debe ser un número válido");
+        }
     }
 
 }

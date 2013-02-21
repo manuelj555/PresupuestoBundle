@@ -34,4 +34,12 @@ class ManoDeObraForm extends AbstractType
         ;
     }
 
+    public function setDefaultOptions(\Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+        $resolver->setDefaults(array(
+            'csrf_protection' => false,
+        ));
+    }
+
 }
