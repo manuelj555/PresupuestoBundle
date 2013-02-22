@@ -28,8 +28,9 @@ class ManoDeObraForm extends AbstractType
                     'class' => "K2\\PresupuestoBundle\\Entity\\TiposDeObras",
                     'property' => 'nombre',
                 ))
-                ->add('precio', 'text', array(
+                ->add('precio', 'number', array(
                     'label' => "Precio",
+                    'precision' => 2,
                 ))
         ;
     }

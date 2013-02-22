@@ -34,13 +34,15 @@ class ManoDeObraController extends Controller
         $form = $this->createForm(new ManoDeObraForm(), $manoDeObra);
 
         if ($this->getRequest()->isMethod('POST')) {
-            $form->bind($this->getRequest());
+            var_dump($this->getRequest()->getContent(), true);
+            $form->bind(json_decode($this->getRequest()->get($form->getName()), true));
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($manoDeObra);
                 $em->flush();
                 return new SuccessResponse("La Mano de Obra se Guardó con exito");
-            }else{
+            } else {
+                var_dump($form->hasErrors(), $form->getErrors(), $form->getErrorsAsString());
                 return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
             }
         }

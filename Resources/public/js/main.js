@@ -26,7 +26,7 @@ function alertMessage(messages)
 
 function jgrowlSucess(message)
 {
-    console.log(message)
+    new Mensaje.info(message);
 }
 
 function alertFormError(messages)

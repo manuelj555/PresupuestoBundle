@@ -38,6 +38,7 @@ class ManosDeObra
      *
      * @ORM\Column(name="precio", type="float", nullable=false)
      * @Assert\NotBlank(message="El Precio no puede estar vacío")
+     * @Assert\Type(type="float", message="El precio debe ser un número")
      */
     private $precio;
 
