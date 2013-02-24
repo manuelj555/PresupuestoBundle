@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DescripcionPresupuestos
 {
+
     /**
      * @var integer
      *
@@ -66,8 +67,6 @@ class DescripcionPresupuestos
      */
     private $presupuesto;
 
-
-
     /**
      * Get id
      *
@@ -87,7 +86,7 @@ class DescripcionPresupuestos
     public function setPosicion($posicion)
     {
         $this->posicion = $posicion;
-    
+
         return $this;
     }
 
@@ -110,7 +109,7 @@ class DescripcionPresupuestos
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
-    
+
         return $this;
     }
 
@@ -133,7 +132,7 @@ class DescripcionPresupuestos
     public function setCantidad($cantidad)
     {
         $this->cantidad = $cantidad;
-    
+
         return $this;
     }
 
@@ -156,7 +155,7 @@ class DescripcionPresupuestos
     public function setPrecio($precio)
     {
         $this->precio = $precio;
-    
+
         return $this;
     }
 
@@ -179,7 +178,7 @@ class DescripcionPresupuestos
     public function setSubtotal($subtotal)
     {
         $this->subtotal = $subtotal;
-    
+
         return $this;
     }
 
@@ -199,10 +198,10 @@ class DescripcionPresupuestos
      * @param \K2\PresupuestoBundle\Entity\Presupuestos $idPresupuesto
      * @return DescripcionPresupuestos
      */
-    public function setPresupuesto(\K2\PresupuestoBundle\Entity\Presupuestos $idPresupuesto = null)
+    public function setPresupuesto(\K2\PresupuestoBundle\Entity\Presupuestos $presupuesto = null)
     {
-        $this->presupuesto = $idPresupuesto;
-    
+        $this->presupuesto = $presupuesto;
+
         return $this;
     }
 
@@ -215,4 +214,10 @@ class DescripcionPresupuestos
     {
         return $this->presupuesto;
     }
+
+    public function calculateSubtotal()
+    {
+        $this->setSubtotal((float) $this->getPrecio() * (float) $this->getCantidad());
+    }
+
 }

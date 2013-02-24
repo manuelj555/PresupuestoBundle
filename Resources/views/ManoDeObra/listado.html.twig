@@ -4,6 +4,15 @@
 
 {% block cuerpo %}
 <div id="resultado"></div>
+<p>
+<div class="text-center">
+    <form method="post" action="{{ path("manosdeobra_listado") }}" class="form-inline" >
+        <label>Mano de Obra</label>
+        <input id="buscar_manos_de_obra" name="description" value="{{ description|escape('html') }}" type="search" class="span5"/>
+        <input type="submit" class="btn" />
+    </form>
+</div>
+</p>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -20,7 +29,7 @@
     <tfoot>
         <tr>
             <th colspan="100">
-                
+
             </th>
         </tr>
     </tfoot>
@@ -34,7 +43,7 @@
                 <td>{{ item.fechaAt|date("d-m-Y") }}</td>
                 <td>{{ item.fechaIn|date("d-m-Y") }}</td>
                 <td class="link-imagen">
-                    <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
+                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="ajax" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
                 </td>
                 <td class="link-imagen">
                     <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/eliminar.png") }}" /></a>

@@ -5,7 +5,7 @@
 {% block titulo "Agregar Mano de Obra" %}
 
 {% block cuerpo %}
-<form method="post" action="{{ path(app.request.attributes.get('_route')) }}" class="form-horizontal">
+<form method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="form-horizontal">
 {{ form_widget(form) }}
         <input type="submit" class="btn" value="Guardar" />
 </form>

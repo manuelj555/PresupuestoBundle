@@ -17,4 +17,12 @@ class Util
 
         return $serializer->normalize($data);
     }
+
+    public static function removeEmpty($array)
+    {
+        return array_filter($array, function($element) {
+                    return null !== $element;
+                });
+    }
+
 }

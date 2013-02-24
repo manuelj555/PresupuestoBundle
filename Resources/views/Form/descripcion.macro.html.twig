@@ -1,0 +1,26 @@
+{% macro form_descripcion(widget) %}
+    {% if widget.get('prototype') %}
+        {% set form = widget.get('prototype') %}
+        {% set name = widget.get('prototype').get('name') %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.get('full_name') %}
+    {% endif %}
+    {% set attr_description = { 'attr' : attr|default({style:"width:98%"}) } %}
+    {% set attr_precio_cant = { 'attr' : attr|default({style:"width:88%"}) } %}
+<tr>
+    <td class="orden">
+        <span>{% if form.vars.data.posicion is defined %}{{ form.vars.data.posicion }}{% endif %}</span>
+        {{ form_widget(form.posicion) }}
+    </td>
+    <td class="descripcion">{{ form_widget(form.descripcion, attr_description) }}</td>
+    <td class="precio">{{ form_widget(form.precio, attr_precio_cant) }}</td>
+    <td class="cantidad">{{ form_widget(form.cantidad, attr_precio_cant) }}</td>
+    <td class="subtotal">{% if form.vars.data.subtotal is defined %}{{ form.vars.data.subtotal }} Bs{% endif %}</td>
+    <td class="link-imagen" style="padding-top: 3px;">
+        <a href="#" class="quitar-descripcion">
+            <img src="{{ asset("bundles/presupuesto/img/figuras/Error.png") }}" />
+        </a>
+    </td>
+</tr>
+{% endmacro %}

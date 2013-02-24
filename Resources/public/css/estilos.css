@@ -43,7 +43,7 @@ table.presupuesto  tbody input{
     background-color: transparent;    
 }
 
-td.sub_total{
+td.subtotal{
     padding-right: 20px !important;
     text-align: right !important;
 }
@@ -69,4 +69,7 @@ table.presupuesto tbody tr:hover input{
 }
 table.presupuesto tfoot td{
     padding: 3px;
+}
+td.orden{
+    text-align: center 
 }

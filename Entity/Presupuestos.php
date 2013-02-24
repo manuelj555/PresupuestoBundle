@@ -4,6 +4,8 @@ namespace K2\PresupuestoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use K2\PresupuestoBundle\Entity\DescripcionPresupuestos;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Presupuestos
@@ -13,6 +15,7 @@ use K2\PresupuestoBundle\Entity\DescripcionPresupuestos;
  */
 class Presupuestos
 {
+
     /**
      * @var integer
      *
@@ -52,12 +55,17 @@ class Presupuestos
 
     /**
      *
-     * @var DescripcionPresupuestos
+     * @var
      * @ignoreAnnotation("ORM")
-     * @ORM\OneToMany(targetEntity="DescripcionPresupuestos", mappedBy="presupuesto") 
+     * @ORM\OneToMany(targetEntity="DescripcionPresupuestos", mappedBy="presupuesto", cascade={"persist", "remove"}) 
+     * @ORM\OrderBy({"posicion":"ASC"})
      */
     private $descripciones;
 
+    function __construct()
+    {
+        $this->descripciones = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -78,7 +86,7 @@ class Presupuestos
     public function setTitulo($titulo)
     {
         $this->titulo = $titulo;
-    
+
         return $this;
     }
 
@@ -101,7 +109,7 @@ class Presupuestos
     public function setTotal($total)
     {
         $this->total = $total;
-    
+
         return $this;
     }
 
@@ -124,7 +132,7 @@ class Presupuestos
     public function setFechaAt($fechaAt)
     {
         $this->fechaAt = $fechaAt;
-    
+
         return $this;
     }
 
@@ -147,7 +155,7 @@ class Presupuestos
     public function setFechaIn($fechaIn)
     {
         $this->fechaIn = $fechaIn;
-    
+
         return $this;
     }
 
@@ -160,4 +168,31 @@ class Presupuestos
     {
         return $this->fechaIn;
     }
+
+    /**
+     * 
+     * @return ArrayCollection
+     */
+    public function getDescripciones()
+    {
+        return $this->descripciones;
+    }
+
+    public function setDescripciones($descripciones)
+    {
+        $this->descripciones = $descripciones;
+    }
+
+    public function guardar(EntityManager $em)
+    {
+        $total = 0;
+        foreach ($this->getDescripciones() as $index => $des) {
+            $des->calculateSubtotal();
+            $total += $des->getSubtotal();
+            $des->setPresupuesto($this);
+        }
+        $this->setTotal($total);
+        $em->persist($this);
+    }
+
 }

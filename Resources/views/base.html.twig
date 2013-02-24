@@ -6,6 +6,7 @@
         {% block stylesheets %}
             {% stylesheets 'bundles/presupuesto/css/bootstrap.min.css' 
                            'bundles/presupuesto/css/bootstrap-responsive.min.css' 
+                           'bundles/presupuesto/css/jqueryui/jquery.ui.all.css' 
                            'bundles/presupuesto/css/jgrowl/jgrowl.css' 
                            'bundles/presupuesto/css/estilos.css' 
                            filter='cssrewrite' %}
@@ -37,12 +38,9 @@
         <script type="text/javascript" >var PUBLIC_PATH = "<?php echo PUBLIC_PATH ?>";</script>
         {% block javascripts %}
             {% javascripts 'bundles/presupuesto/js/jquery/jquery-1.7.min.js' 
-                           'bundles/presupuesto/js/backbone/underscore-min.js'
-                           'bundles/presupuesto/js/backbone/backbone-min.js'
-                           'bundles/presupuesto/js/backbone/backbone_relational.js'
+                           'bundles/presupuesto/js/jquery/jquery-ui.custom.js'
                            'bundles/presupuesto/js/bootstrap.min.js'
                            'bundles/presupuesto/js/jgrowl/jgrowl.js'
-                           'bundles/presupuesto/js/mensajes.js'
                            'bundles/presupuesto/js/main.js'
             %}
             <script type="text/javascript" src="{{ asset_url }}"></script>

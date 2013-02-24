@@ -1,0 +1,55 @@
+{% extends "PresupuestoBundle::base.html.twig" %}
+
+{% import 'PresupuestoBundle:Form:descripcion.macro.html.twig' as forms %}
+
+{% block titulo "Presupuesto" %}
+
+{% block cuerpo %}
+<div id="res-ajax"></div>
+<div class="overflow" style="height:auto;">
+    <form id="form_presupuesto" method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="ajax" data-res="#res-ajax">
+        <table class="presupuesto table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th colspan="6" style="border-bottom: 1px solid #DDD;">
+                        Título&nbsp;&nbsp;&nbsp;{{ form_widget(form.titulo,{attr:{class:"span7"}}) }}
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 30px;">Orden</th>
+                    <th style="width: 530px;">Mano de Obra</th>
+                    <th style="width: 70px;">Bs</th>
+                    <th style="width: 70px;font-size: 13px;">Cant</th>
+                    <th style="width: 90px;">SubTotal Bs</th>
+                    <th style="width: 40px;">Remover</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <a class="btn mostrar-manos-de-obra ajax" data-res="#contenido-ajax" href="{{ path("manosdeobra_all_modal") }}">+ Mano De Obra</a>
+                        <a class="btn agregar-descripcion-vacia">+ linea vacia</a>
+                        <a href="#" target="_blanck" class="btn">Imprimir</a>
+                        <input class="btn pull-right guardar" value="Guardar" type="submit" />
+                    </td>
+                    <td colspan="2" style="text-align: right;padding-right: 20px;vertical-align: middle">
+                        <b>TOTAL :</b>
+                    </td>
+                    <td colspan="2" style="text-align: center;font-size: 18px;vertical-align: middle" class="total">
+                        {{ presupuesto.total }} Bs
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody class="sortable listado-descripciones" data-prototype="{{ forms.form_descripcion(form.descripciones.vars.prototype)|e }}">
+                {% for item in form.descripciones %}
+                    {{ forms.form_descripcion(item) }}
+                {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+{% endblock cuerpo %}
+{% block javascripts %}
+{{ parent() }}
+        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/pre.js') }}"></script>
+{% endblock javascripts %}

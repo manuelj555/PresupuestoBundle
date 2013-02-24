@@ -9,3 +9,7 @@ services:
         class: K2\PresupuestoBundle\Service\ViewSelector
         arguments: 
             - "@service_container"
+    k2_twig_extensions:
+        class: K2\PresupuestoBundle\Twig\PresupuestoExtension
+        tags:
+          - {name: twig.extension}

@@ -1,0 +1,57 @@
+<div id="modal_manodeobra" class="modal fade" style="width: 60%">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Manos de Obra</h3>
+    </div>
+    <div class="modal-body">
+        <div class="text-center form-inline">
+                <label>Mano de Obra</label>
+                <input id="manos_de_obra_autocomplete" name="description" value="" type="search" class="span5"/>
+                <input type="reset" class="btn" value="Limpiar" />
+        </div>
+        <br/>
+        <table class="table table-bordered table-striped presupuesto-manos-de-obra">
+            <thead>
+                <tr>
+                    <th style="width: 70%">Descripción</th>
+                    <th style="font-size: 11px">U/medidad</th>
+                    <th style="font-size: 10px">Tipo de Trabajo</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th colspan="100">
+
+                    </th>
+                </tr>
+            </tfoot>
+            <tbody>
+        {% for item in manosdeobra %}
+                    <tr data-json="{{ json_entity(item) }}">
+                        <td>{{ item.descripcion|escape }}</td>
+                        <td>{{ item.medidas.medida|escape }}</td>
+                        <td>{{ item.tiposDeObras.nombre|escape }}</td>
+                        <td>{{ item.precio|number_format(2) }} Bs</td>
+                    </tr>
+        {% else %}
+                    <tr>
+                        <td colspan="100">
+                            No exisen Manos de Obra
+                        </td>
+                    </tr>
+        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn">Cerrar</a>
+            <input type="submit" class="btn btn-primary" value="Guardar" />
+        </div>
+    </div>
+<script type="text/javascript" >
+        $("#modal_manodeobra").modal();
+        $("#manos_de_obra_autocomplete").autocomplete({
+            source : {{ json_autocomplete(manosdeobra,'descripcion')|raw }},
+        }).on('keyup change',filtrarListado)
+</script>

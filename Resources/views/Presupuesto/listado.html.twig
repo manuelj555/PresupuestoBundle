@@ -2,7 +2,7 @@
 
 {% block titulo %}
 Presupuestos del Sistema
-<a class="btn btn-primary btn-large pull-right" href="#">Crear Presupuesto</a>
+<a class="btn btn-primary btn-large pull-right" href="{{ path("presupuesto_edicion") }}">Crear Presupuesto</a>
 {% endblock titulo %}
 
 {% block cuerpo %}
@@ -32,7 +32,7 @@ Presupuestos del Sistema
                     <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
                 </td>
                 <td class="link-imagen">
-                    <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
+                    <a href="{{ path("presupuesto_edicion",{id:item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
                 </td>
                 <td class="link-imagen">
                     <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/eliminar.png") }}" /></a>

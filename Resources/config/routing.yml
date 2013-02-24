@@ -3,12 +3,34 @@ presupuesto_listado:
     defaults: { _controller: PresupuestoBundle:Presupuesto:listado, page: 1 }
     requirements:
         page: \d+
+        
+presupuesto_edicion:
+    pattern:  /presupuesto/{id}
+    defaults: 
+        _controller: PresupuestoBundle:Presupuesto:edicion
+        id: null
+    requirements:
+        id: \d+
     
 manosdeobra_listado:
-    pattern:  /manosdeobra/{page}
-    defaults: { _controller: PresupuestoBundle:ManoDeObra:listado, page: 1 }
+    pattern:  /manosdeobra/{page}/{description}
+    defaults:
+        _controller: PresupuestoBundle:ManoDeObra:listado
+        page: 1
+        description: 
     requirements:
         page: \d+
+        
 manosdeobra_agregar:
     pattern:  /manosdeobra/agregar
     defaults: { _controller: PresupuestoBundle:ManoDeObra:agregar }
+    
+manosdeobra_editar:
+    pattern:  /manosdeobra/editar/{id}
+    defaults: { _controller: PresupuestoBundle:ManoDeObra:editar }
+    requirements:
+        id: \d+
+
+manosdeobra_all_modal:
+    pattern:  /manosdeobra/todas
+    defaults: { _controller: PresupuestoBundle:ManoDeObra:getAll }

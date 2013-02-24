@@ -4,7 +4,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Agregar Presupuesto</h3>
     </div>
-    <form method="post" action="{{ path(app.request.attributes.get('_route')) }}" class="form-horizontal ajax" data-res="#res-ajax">
+    <form method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="form-horizontal ajax" data-res="#res-ajax">
         <div class="modal-body">
             <div id="res-ajax"></div>
             {{ form_widget(form) }}
