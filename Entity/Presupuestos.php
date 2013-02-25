@@ -181,16 +181,32 @@ class Presupuestos
     public function setDescripciones($descripciones)
     {
         $this->descripciones = $descripciones;
-    }
-
-    public function guardar(EntityManager $em)
-    {
-        $total = 0;
-        foreach ($this->getDescripciones() as $index => $des) {
-            $des->calculateSubtotal();
-            $total += $des->getSubtotal();
+        foreach ($descripciones as $des) {
             $des->setPresupuesto($this);
         }
+    }
+
+    public function guardar(EntityManager $em, $descripcionesOriginales)
+    {
+        $total = 0;
+
+        foreach ($descripcionesOriginales as $key => $actual) {
+            foreach ($this->getDescripciones() as $des) {
+                $des->calculateSubtotal();
+                $total += $des->getSubtotal();
+                if ($actual->getId() === $des->getId()) {
+                    //si la descripcion que viene del form está ya está persistida,
+                    //la quito de las que se eliminarán de la bd
+                    unset($descripcionesOriginales[$key]);
+                }
+            }
+        }
+
+        //eliminamos las originales que no se enviaron en el form
+        foreach ($descripcionesOriginales as $des) {
+            $des->setPresupuesto(null);
+        }
+
         $this->setTotal($total);
         $em->persist($this);
     }

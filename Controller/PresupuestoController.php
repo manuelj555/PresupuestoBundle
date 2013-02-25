@@ -31,11 +31,14 @@ class PresupuestoController extends Controller
         $form = $this->createForm(new PresupuestoForm(), $presupuesto);
 
         if ($this->getRequest()->isMethod('POST')) {
+            
+            $descripcionesOriginales = $presupuesto->getDescripciones()->toArray();
+            
             $data = json_decode($this->getRequest()->getContent(), true);
             $form->bind($data[$form->getName()]);
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
-                $presupuesto->guardar($em);
+                $presupuesto->guardar($em, $descripcionesOriginales);
                 $em->flush();
                 return new SuccessResponse("Presupuesto Guardado");
             } else {
