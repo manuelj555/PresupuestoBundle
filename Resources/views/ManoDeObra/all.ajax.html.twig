@@ -51,5 +51,10 @@
     </div>
 <script type="text/javascript" >
         $("#modal_manodeobra").modal();
-        $("#manos_de_obra_autocomplete").on('keyup change',filtrarListado)
+        $("#manos_de_obra_autocomplete").on('keyup change',function(event){
+            event.preventDefault()
+            if(event.keyCode == 13){
+                filtrarListado()                
+            }
+        })
 </script>

@@ -12,7 +12,7 @@ function addManoDeObra(data) {
     var element = container.data("prototype")
     element = $(element.replace(/__name__/g, ++numDescriptions))
     element.find(".descripcion input").val(data['descripcion'])
-    element.find(".precio input").val(data['precio'])
+    element.find(".precio input").val(data['precio'] + " " + data['medidas']['medida'])
     element.find(".cantidad input").val(data['cantidad'])
     element.find(".subtotal").html(data['subtotal'] + ' Bs')
 
