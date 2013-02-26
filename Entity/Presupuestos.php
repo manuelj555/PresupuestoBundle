@@ -190,10 +190,10 @@ class Presupuestos
     {
         $total = 0;
 
-        foreach ($descripcionesOriginales as $key => $actual) {
-            foreach ($this->getDescripciones() as $des) {
-                $des->calculateSubtotal();
-                $total += $des->getSubtotal();
+        foreach ($this->getDescripciones() as $des) {
+            $des->calculateSubtotal();
+            $total += $des->getSubtotal();
+            foreach ($descripcionesOriginales as $key => $actual) {
                 if ($actual->getId() === $des->getId()) {
                     //si la descripcion que viene del form está ya está persistida,
                     //la quito de las que se eliminarán de la bd
