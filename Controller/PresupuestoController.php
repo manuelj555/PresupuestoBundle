@@ -7,7 +7,7 @@ use K2\PresupuestoBundle\Entity\Presupuestos;
 use K2\PresupuestoBundle\Form\PresupuestoForm;
 use K2\PresupuestoBundle\Response\SuccessResponse;
 use K2\PresupuestoBundle\Response\ErrorResponse;
-use K2\PresupuestoBundle\Util;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PresupuestoController extends Controller
 {
@@ -63,8 +63,13 @@ class PresupuestoController extends Controller
         if (null !== $id) {
 
             $presupuesto = $this->getDoctrine()
-                    ->getRepository("PresupuestoBundle:Presupuestos")
-                    ->find($id);
+                    ->getEntityManager()
+                    ->createQuery("SELECT p 
+                                   FROM PresupuestoBundle:Presupuestos p
+                                   JOIN p.descripciones des
+                                   WHERE p.id = :id")
+                    ->setParameter("id", $id, \PDO::PARAM_INT)
+                    ->getSingleResult();
 
             if (!$presupuesto) {
                 throw $this->createNotFoundException("No existe el presupuesto $id");
@@ -74,6 +79,23 @@ class PresupuestoController extends Controller
         }
 
         return $presupuesto;
+    }
+    
+    public function excelAction($id){
+        $presupuesto = $this->getPresupuesto($id);
+        
+        return $this->prepareExcel(function()use ($presupuesto){
+            require "/../Resources/views/Presupuesto/presupuesto.excel.php";
+        }, $presupuesto->getTitulo());
+    }
+    
+    protected function prepareExcel(\Closure $function, $filename = 'report')
+    {
+        $response = new StreamedResponse($function);
+        $response->headers->set('Content-Type', 'vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.xlsx\"");
+        $response->headers->set('Cache-Control', 'ax-age=0');
+        return $response;
     }
 
 }

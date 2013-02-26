@@ -11,6 +11,13 @@ presupuesto_edicion:
         id: null
     requirements:
         id: \d+
+        
+presupuesto_excel:
+    pattern:  /presupuesto/{id}.excel
+    defaults: 
+        _controller: PresupuestoBundle:Presupuesto:excel
+    requirements:
+        id: \d+
     
 manosdeobra_listado:
     pattern:  /manosdeobra/{page}/{description}
