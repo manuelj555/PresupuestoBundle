@@ -2,11 +2,12 @@ var numDescriptions = $(".listado-descripciones tr").size()
 
 function addManoDeObra(data) {
     data = $.extend({
-        posicion: null,
-        subtotal: null,
-        cantidad: null,
-        precio: null,
-        descripcion: null,
+        posicion: '',
+        subtotal: 0,
+        cantidad: '',
+        precio: '',
+        descripcion: '',
+        medidas: { medida : '' }
     }, data)
     var container = $(".listado-descripciones")
     var element = container.data("prototype")

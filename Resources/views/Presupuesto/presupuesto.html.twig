@@ -29,7 +29,11 @@
                     <td colspan="2">
                         <a class="btn mostrar-manos-de-obra ajax" data-res="#contenido-ajax" href="{{ path("manosdeobra_all_modal") }}">+ Mano De Obra</a>
                         <a class="btn agregar-descripcion-vacia">+ linea vacia</a>
-                        <a href="#" target="_blanck" class="btn">Imprimir</a>
+                        {% if presupuesto.id is not null %}
+                            <a href="/presupuestos_bootstrap/imprimir/{{ presupuesto.id }}" target="_blank" class="btn">Imprimir</a>
+                        {% else %}
+                            <a href="#" target="_blank" class="btn disabled">Imprimir</a>
+                        {% endif %}
                         <input class="btn pull-right guardar" value="Guardar" type="submit" />
                     </td>
                     <td colspan="2" style="text-align: right;padding-right: 20px;vertical-align: middle">

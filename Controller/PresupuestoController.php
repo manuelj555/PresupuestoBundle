@@ -8,6 +8,7 @@ use K2\PresupuestoBundle\Form\PresupuestoForm;
 use K2\PresupuestoBundle\Response\SuccessResponse;
 use K2\PresupuestoBundle\Response\ErrorResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use K2\PresupuestoBundle\Response\RedirectResponse;
 
 class PresupuestoController extends Controller
 {
@@ -31,16 +32,24 @@ class PresupuestoController extends Controller
         $form = $this->createForm(new PresupuestoForm(), $presupuesto);
 
         if ($this->getRequest()->isMethod('POST')) {
-            
+
             $descripcionesOriginales = $presupuesto->getDescripciones()->toArray();
-            
+
             $data = json_decode($this->getRequest()->getContent(), true);
             $form->bind($data[$form->getName()]);
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $presupuesto->guardar($em, $descripcionesOriginales);
                 $em->flush();
-                return new SuccessResponse("Presupuesto Guardado");
+                if ($id === null) {
+                    //si es nuevo redireccionamos a editar
+                    return new RedirectResponse($this
+                            ->generateUrl("presupuesto_edicion",array(
+                                'id' => $presupuesto->getId(),
+                            )));
+                } else {
+                    return new SuccessResponse("Presupuesto Guardado");
+                }
             } else {
                 return new ErrorResponse($form->getErrors());
             }
@@ -66,10 +75,10 @@ class PresupuestoController extends Controller
                     ->getEntityManager()
                     ->createQuery("SELECT p 
                                    FROM PresupuestoBundle:Presupuestos p
-                                   JOIN p.descripciones des
+                                   LEFT JOIN p.descripciones des
                                    WHERE p.id = :id")
                     ->setParameter("id", $id, \PDO::PARAM_INT)
-                    ->getSingleResult();
+                    ->getOneOrNullResult();
 
             if (!$presupuesto) {
                 throw $this->createNotFoundException("No existe el presupuesto $id");
@@ -80,15 +89,16 @@ class PresupuestoController extends Controller
 
         return $presupuesto;
     }
-    
-    public function excelAction($id){
+
+    public function excelAction($id)
+    {
         $presupuesto = $this->getPresupuesto($id);
-        
-        return $this->prepareExcel(function()use ($presupuesto){
-            require "/../Resources/views/Presupuesto/presupuesto.excel.php";
-        }, $presupuesto->getTitulo());
+
+        return $this->prepareExcel(function()use ($presupuesto) {
+                            require "/../Resources/views/Presupuesto/presupuesto.excel.php";
+                        }, $presupuesto->getTitulo());
     }
-    
+
     protected function prepareExcel(\Closure $function, $filename = 'report')
     {
         $response = new StreamedResponse($function);

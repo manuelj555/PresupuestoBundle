@@ -29,8 +29,10 @@ class PresupuestoForm extends AbstractType
 
         $builder->addEventListener(FormEvents::PRE_BIND, function(FormEvent $event) {
                     $data = $event->getData();
-                    $data['descripciones'] = array_values(Util::removeEmpty($data['descripciones']));
-                    $event->setData($data);
+                    if (isset($data['descripciones'])) {
+                        $data['descripciones'] = array_values(Util::removeEmpty($data['descripciones']));
+                        $event->setData($data);
+                    }
                 });
     }
 

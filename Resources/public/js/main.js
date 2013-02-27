@@ -154,3 +154,7 @@ function alertFormError(messages)
         window.contentRes.append(_.template(alert, this))
     })
 }
+
+function redirect(url){
+    window.location = url
+}
