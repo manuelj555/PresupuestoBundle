@@ -29,7 +29,7 @@ Presupuestos del Sistema
                 <td>{{ item.titulo|escape }}</td>
                 <td>{{ item.total|escape }} Bs</td>
                 <td class="link-imagen">
-                    <a target="_blank" href="/presupuestos_bootstrap/imprimir/{{ item.id }}" href__="{{ path("presupuesto_excel",{id : item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
+                    <a target="_blank" href="{{ path("presupuesto_excel",{id : item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
                 </td>
                 <td class="link-imagen">
                     <a href="{{ path("presupuesto_edicion",{id:item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>

@@ -220,4 +220,14 @@ class DescripcionPresupuestos
         $this->setSubtotal((float) $this->getPrecio() * (float) $this->getCantidad());
     }
 
+    public function getPrecioNum()
+    {
+        return (float) $this->precio;
+    }
+
+    public function getUnidadMedida()
+    {
+        return preg_replace('/\d+/', '', $this->precio);
+    }
+
 }
