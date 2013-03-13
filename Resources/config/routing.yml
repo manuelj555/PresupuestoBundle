@@ -12,12 +12,14 @@ presupuesto_edicion:
     requirements:
         id: \d+
         
-presupuesto_excel:
-    pattern:  /presupuesto/{id}.excel
+presupuesto_export:
+    pattern:  /presupuesto/{id}.{_format}
     defaults: 
-        _controller: PresupuestoBundle:Presupuesto:excel
+        _controller: PresupuestoBundle:Presupuesto:export
+        _format: xls
     requirements:
         id: \d+
+        _format: xls|pdf
     
 manosdeobra_listado:
     pattern:  /manosdeobra/{page}/{description}

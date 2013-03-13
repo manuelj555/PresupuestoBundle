@@ -44,9 +44,9 @@ class PresupuestoController extends Controller
                 if ($id === null) {
                     //si es nuevo redireccionamos a editar
                     return new RedirectResponse($this
-                            ->generateUrl("presupuesto_edicion",array(
-                                'id' => $presupuesto->getId(),
-                            )));
+                                    ->generateUrl("presupuesto_edicion", array(
+                                        'id' => $presupuesto->getId(),
+                                    )));
                 } else {
                     return new SuccessResponse("Presupuesto Guardado");
                 }
@@ -90,20 +90,28 @@ class PresupuestoController extends Controller
         return $presupuesto;
     }
 
-    public function excelAction($id)
+    public function exportAction($id, $_format)
     {
         $presupuesto = $this->getPresupuesto($id);
 
-        return $this->prepareExcel(function()use ($presupuesto) {
-                            require "/../Resources/views/Presupuesto/presupuesto.excel.php";
-                        }, $presupuesto->getTitulo());
+        return $this->prepareExport(function()use ($presupuesto, $_format) {
+                            require "/../Resources/views/Presupuesto/presupuesto.$_format.php";
+                        }, $_format, $presupuesto->getTitulo());
     }
 
-    protected function prepareExcel(\Closure $function, $filename = 'report')
+    protected function prepareExport(\Closure $function, $format, $filename = 'report')
     {
         $response = new StreamedResponse($function);
-        $response->headers->set('Content-Type', 'vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        $response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.xlsx\"");
+        switch ($format) {
+            case 'pdf':
+                $response->headers->set('Content-Type', 'application/pdf');
+                //$response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.pdf\"");
+                break;
+            case 'xls':
+                $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                $response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.xlsx\"");
+                break;
+        }
         $response->headers->set('Cache-Control', 'ax-age=0');
         return $response;
     }

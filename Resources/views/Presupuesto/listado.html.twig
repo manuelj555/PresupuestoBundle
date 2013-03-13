@@ -11,7 +11,8 @@ Presupuestos del Sistema
         <tr>
             <th>Título</th>
             <th>Total Bs</th>
-            <th>Imprimir</th>
+            <th>Generar Excel</th>
+            <th>Generar PDF</th>
             <th>Editar</th>
             <th>Eliminar</th>
         </tr>
@@ -29,7 +30,10 @@ Presupuestos del Sistema
                 <td>{{ item.titulo|escape }}</td>
                 <td>{{ item.total|escape }} Bs</td>
                 <td class="link-imagen">
-                    <a target="_blank" href="{{ path("presupuesto_excel",{id : item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
+                    <a target="_blank" href="{{ path("presupuesto_export",{id : item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
+                </td>
+                <td class="link-imagen">
+                    <a target="_blank" href="{{ path("presupuesto_export",{id : item.id, _format: 'pdf'}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/imprimir.gif") }}" /></a>
                 </td>
                 <td class="link-imagen">
                     <a href="{{ path("presupuesto_edicion",{id:item.id}) }}"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>

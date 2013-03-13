@@ -1,5 +1,4 @@
 <?php
-
 $workbook = new \PHPExcel();
 
 $sheet = $workbook->getActiveSheet();
@@ -110,6 +109,4 @@ $sheet->getStyle("A{$initialRow}:F{$fila}")
         ->getAlignment()
         ->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-$writer = \PHPExcel_IOFactory::createWriter($workbook, 'Excel2007');
-
-$writer->save('php://output');
+return $workbook;
