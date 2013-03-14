@@ -61,7 +61,7 @@ $sheet->mergeCells("B{$headerRow}:C{$headerRow}");
 //unimos las columnas E y F de la cabecera para el subtotal y la palabra Bs
 $sheet->mergeCells("E{$headerRow}:F{$headerRow}");
 //unimos las columnas A1 y E1 donde vá el título
-$sheet->mergeCells("A1:E1");
+$sheet->mergeCells("A1:F1");
 //acá sacamos la fila a partir de donde van las descripciones, luego de las cabeceras
 $initialRow = $headerRow + 1;
 $fila = $initialRow;
