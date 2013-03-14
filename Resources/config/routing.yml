@@ -13,13 +13,11 @@ presupuesto_edicion:
         id: \d+
         
 presupuesto_export:
-    pattern:  /presupuesto/{id}.{_format}
+    pattern:  /presupuesto/{id}.xls
     defaults: 
         _controller: PresupuestoBundle:Presupuesto:export
-        _format: xls
     requirements:
         id: \d+
-        _format: xls|pdf
     
 manosdeobra_listado:
     pattern:  /manosdeobra/{page}/{description}

@@ -90,28 +90,20 @@ class PresupuestoController extends Controller
         return $presupuesto;
     }
 
-    public function exportAction($id, $_format)
+    public function exportAction($id)
     {
         $presupuesto = $this->getPresupuesto($id);
 
-        return $this->prepareExport(function()use ($presupuesto, $_format) {
-                            require "/../Resources/views/Presupuesto/presupuesto.$_format.php";
-                        }, $_format, $presupuesto->getTitulo());
+        return $this->prepareExport(function()use ($presupuesto) {
+                            require "/../Resources/views/Presupuesto/presupuesto.xls.php";
+                        }, $presupuesto->getTitulo());
     }
 
-    protected function prepareExport(\Closure $function, $format, $filename = 'report')
+    protected function prepareExport(\Closure $function, $filename = 'report')
     {
         $response = new StreamedResponse($function);
-        switch ($format) {
-            case 'pdf':
-                $response->headers->set('Content-Type', 'application/pdf');
-                //$response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.pdf\"");
-                break;
-            case 'xls':
-                $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                $response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.xlsx\"");
-                break;
-        }
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', "attachment;filename=\"{$filename}.xlsx\"");
         $response->headers->set('Cache-Control', 'ax-age=0');
         return $response;
     }
