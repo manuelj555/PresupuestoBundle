@@ -34,6 +34,7 @@
                 </footer>
         </div>
         <div id="contenido-ajax"></div>
+        <div class="loading"><img src="{{ asset("bundles/presupuesto/img/figuras/cargando.gif") }}" /><div></div></div>
         {% include 'PresupuestoBundle::modal.html.twig' %}
         <script type="text/javascript" >var PUBLIC_PATH = "<?php echo PUBLIC_PATH ?>";</script>
         {% block javascripts %}

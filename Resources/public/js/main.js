@@ -158,3 +158,9 @@ function alertFormError(messages)
 function redirect(url){
     window.location = url
 }
+
+$(document).ajaxStart(function(){
+    $(".loading").show(0)
+}).ajaxComplete(function(){
+    $(".loading").hide(0)
+})
