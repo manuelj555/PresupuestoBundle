@@ -227,7 +227,7 @@ class DescripcionPresupuestos
 
     public function getUnidadMedida()
     {
-        return trim(preg_replace('/\d+/', '', $this->precio));
+        return trim(preg_replace('/\d+/u', '', $this->precio));
     }
 
 }
