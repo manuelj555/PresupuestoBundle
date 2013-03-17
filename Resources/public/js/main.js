@@ -90,10 +90,10 @@ JSON.stringify = JSON.stringify || function(obj) {
 
 function jgrowl(mensaje, tipo)
 {
-    $.jGrowl(mensaje,{
-            'titulo' : "Mensaje",
-            'estilo' : this.color + " " + tipo
-        });
+    $.jGrowl(mensaje, {
+        'titulo': "Mensaje",
+        'estilo': this.color + " " + tipo
+    });
 }
 
 function toFloat(num) {
@@ -147,20 +147,21 @@ function jgrowlSuccess(message)
 
 function alertFormError(messages)
 {
-    console.log(messages)
-    var alert = "<div class=\"alert alert-error\"><%= message %></div>";
+    var alert = "<div class=\"alert alert-error\">\n\
+     <button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>\n\
+     <%= message %></div>";
     window.contentRes.html("")
     $.each(messages, function() {
         window.contentRes.append(_.template(alert, this))
     })
 }
 
-function redirect(url){
+function redirect(url) {
     window.location = url
 }
 
-$(document).ajaxStart(function(){
+$(document).ajaxStart(function() {
     $(".loading").show(0)
-}).ajaxComplete(function(){
+}).ajaxComplete(function() {
     $(".loading").hide(0)
 })

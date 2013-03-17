@@ -55,7 +55,6 @@ class ManoDeObraController extends Controller
                 $em->flush();
                 return new SuccessResponse("La Mano de Obra se Guardó con exito");
             } else {
-                var_dump($form->hasErrors(), $form->getErrors(), $form->getErrorsAsString());
                 return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
             }
         }

@@ -17,20 +17,23 @@ class ManoDeObraForm extends AbstractType
     {
         $builder->add('descripcion', null, array(
                     'label' => "Descripción",
+                    'error_bubbling' => true,
                 ))
                 ->add('medidas', 'entity', array(
                     'label' => "Unidad de Medida",
                     'class' => "K2\\PresupuestoBundle\\Entity\\Medidas",
                     'property' => 'medida',
+                    'error_bubbling' => true,
                 ))
                 ->add('tiposDeObras', 'entity', array(
                     'label' => "Tipo",
                     'class' => "K2\\PresupuestoBundle\\Entity\\TiposDeObras",
                     'property' => 'nombre',
+                    'error_bubbling' => true,
                 ))
-                ->add('precio', 'number', array(
+                ->add('precio', 'text', array(
                     'label' => "Precio",
-                    'precision' => 2,
+                    'error_bubbling' => true,
                 ))
         ;
     }

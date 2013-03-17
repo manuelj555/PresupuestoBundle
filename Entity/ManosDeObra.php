@@ -13,8 +13,7 @@ use Symfony\Component\Validator\ExecutionContext;
  * @ORM\Table(name="manos_de_obra")
  * @ORM\Entity
  */
-class ManosDeObra
-{
+class ManosDeObra {
 
     /**
      * @var integer
@@ -38,7 +37,7 @@ class ManosDeObra
      *
      * @ORM\Column(name="precio", type="float", nullable=false)
      * @Assert\NotBlank(message="El Precio no puede estar vacío")
-     * @Assert\Type(type="float", message="El precio debe ser un número")
+     * @ Assert\Type(type="float", message="El precio debe ser un número")
      */
     private $precio;
 
@@ -76,8 +75,7 @@ class ManosDeObra
      */
     private $medidas;
 
-    function __construct()
-    {
+    function __construct() {
         $this->fechaAt = $this->fechaIn = new \DateTime('now');
     }
 
@@ -86,8 +84,7 @@ class ManosDeObra
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -97,8 +94,7 @@ class ManosDeObra
      * @param string $descripcion
      * @return ManosDeObra
      */
-    public function setDescripcion($descripcion)
-    {
+    public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
 
         return $this;
@@ -109,8 +105,7 @@ class ManosDeObra
      *
      * @return string 
      */
-    public function getDescripcion()
-    {
+    public function getDescripcion() {
         return $this->descripcion;
     }
 
@@ -120,8 +115,7 @@ class ManosDeObra
      * @param float $precio
      * @return ManosDeObra
      */
-    public function setPrecio($precio)
-    {
+    public function setPrecio($precio) {
         $this->precio = $precio;
 
         return $this;
@@ -132,8 +126,7 @@ class ManosDeObra
      *
      * @return float 
      */
-    public function getPrecio()
-    {
+    public function getPrecio() {
         return $this->precio;
     }
 
@@ -143,8 +136,7 @@ class ManosDeObra
      * @param \DateTime $fechaAt
      * @return ManosDeObra
      */
-    public function setFechaAt($fechaAt)
-    {
+    public function setFechaAt($fechaAt) {
         $this->fechaAt = $fechaAt;
 
         return $this;
@@ -155,8 +147,7 @@ class ManosDeObra
      *
      * @return \DateTime 
      */
-    public function getFechaAt()
-    {
+    public function getFechaAt() {
         return $this->fechaAt;
     }
 
@@ -166,8 +157,7 @@ class ManosDeObra
      * @param \DateTime $fechaIn
      * @return ManosDeObra
      */
-    public function setFechaIn($fechaIn)
-    {
+    public function setFechaIn($fechaIn) {
         $this->fechaIn = $fechaIn;
 
         return $this;
@@ -178,8 +168,7 @@ class ManosDeObra
      *
      * @return \DateTime 
      */
-    public function getFechaIn()
-    {
+    public function getFechaIn() {
         return $this->fechaIn;
     }
 
@@ -187,8 +176,7 @@ class ManosDeObra
      * 
      * @return TiposDeObras
      */
-    public function getTiposDeObras()
-    {
+    public function getTiposDeObras() {
         return $this->tiposDeObras;
     }
 
@@ -196,8 +184,7 @@ class ManosDeObra
      * 
      * @param \K2\PresupuestoBundle\Entity\TiposDeObras $tiposDeObras
      */
-    public function setTiposDeObras(TiposDeObras $tiposDeObras)
-    {
+    public function setTiposDeObras(TiposDeObras $tiposDeObras) {
         $this->tiposDeObras = $tiposDeObras;
 
         return $this;
@@ -209,8 +196,7 @@ class ManosDeObra
      * @param \K2\PresupuestoBundle\Entity\Medidas $medidas
      * @return ManosDeObra
      */
-    public function setMedidas(\K2\PresupuestoBundle\Entity\Medidas $medidas = null)
-    {
+    public function setMedidas(\K2\PresupuestoBundle\Entity\Medidas $medidas = null) {
         $this->medidas = $medidas;
 
         return $this;
@@ -221,16 +207,14 @@ class ManosDeObra
      *
      * @return \K2\PresupuestoBundle\Entity\Medidas 
      */
-    public function getMedidas()
-    {
+    public function getMedidas() {
         return $this->medidas;
     }
 
-    public function esPrecioFloat(ExecutionContext $context)
-    {
-//        if (!((float) $this->getPrecio())) {
-//            $context->addViolationAtPath("precio", "El precio debe ser un número válido");
-//        }
+    public function esPrecioFloat(ExecutionContext $context) {
+        if (!is_numeric($this->getPrecio())) {
+            $context->addViolationAtPath("precio", "El precio debe ser un número válido");
+        }
     }
 
 }
