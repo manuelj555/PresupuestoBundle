@@ -27,7 +27,7 @@
             <tfoot>
                 <tr>
                     <td colspan="2">
-                        <a class="btn mostrar-manos-de-obra ajax" data-res="#contenido-ajax" href="{{ path("manosdeobra_all_modal") }}">+ Mano De Obra</a>
+                        <a class="btn mostrar-manos-de-obra" href="{{ path("manosdeobra_all_modal") }}">+ Mano De Obra</a>
                         <a class="btn agregar-descripcion-vacia">+ linea vacia</a>
                         {% if presupuesto.id is not null %}
                             <a href="{{ path("presupuesto_export",{id : presupuesto.id}) }}" target="_blank" class="btn">Imprimir</a>
@@ -53,6 +53,7 @@
             {{ form_rest(form) }}
             </form>
         </div>
+<div id="listado_manosdeobra"></div>
 {% endblock cuerpo %}
 {% block javascripts %}
 {{ parent() }}

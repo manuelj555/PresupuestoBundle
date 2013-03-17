@@ -1,4 +1,5 @@
 var numDescriptions = $(".listado-descripciones tr").size()
+var ManosDeObra = {};
 
 function addManoDeObra(data) {
     data = $.extend({
@@ -7,7 +8,7 @@ function addManoDeObra(data) {
         cantidad: '',
         precio: '',
         descripcion: '',
-        medidas: { medida : '' }
+        medidas: {medida: ''}
     }, data)
     var container = $(".listado-descripciones")
     var element = container.data("prototype")
@@ -74,5 +75,15 @@ $("body").on('click', ".presupuesto-manos-de-obra tbody tr", function(event) {
     data['cantidad'] = 1
     addManoDeObra(data)
     $("#modal_manodeobra").modal("hide")
+})
+$(".mostrar-manos-de-obra").on('click', function(event) {
+    event.preventDefault()
+    if ($("#listado_manosdeobra").html() == '') {
+        $("#listado_manosdeobra").load($(this).attr("href"), function() {
+            $("#modal_manodeobra").modal();
+        });
+    } else {
+        $("#modal_manodeobra").modal();
+    }
 })
 
