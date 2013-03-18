@@ -8,6 +8,7 @@
         <div class="modal-body">
             <div id="res-ajax"></div>
             {{ form_widget(form) }}
+            <br/>
         </div>
         <div class="modal-footer">
             <a href="#" data-dismiss="modal" class="btn">Cerrar</a>
@@ -17,5 +18,5 @@
 </div>
 <script type="text/javascript" >
     $("#modal_manodeobra").modal();
-    $("#modal_manodeobra form").validationEngine();
+    $("#modal_manodeobra form").validationEngine('attach', {promptPosition : "bottomLeft"});
 </script>

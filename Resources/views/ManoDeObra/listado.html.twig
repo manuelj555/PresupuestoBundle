@@ -13,7 +13,8 @@
     </form>
 </div>
 </p>
-<table class="table table-bordered table-striped">
+<form class="validationEngineContainer">
+<table class="table table-bordered table-striped manos_de_obras_list">
     <thead>
         <tr>
             <th style="width: 40%">Descripción</th>
@@ -22,18 +23,12 @@
             <th>Precio</th>
             <th>Creada</th>
             <th>Actualizada</th>
+            <th>Edit en Linea</th>
             <th>Editar</th>
             <th>Eliminar</th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th colspan="100">
-
-            </th>
-        </tr>
-    </tfoot>
-    <tbody>
+    <tbody data-medidas="{{ form_widget(form.medidas)|e }}" data-tiposdeobras="{{ form_widget(form.tiposDeObras)|e }}" data-descripcion="{{ form_widget(form.descripcion)|e }}" data-precio="{{ form_widget(form.precio)|e }}">
         {% for item in manosdeobra %}
             <tr>
                 <td>{{ item.descripcion|escape }}</td>
@@ -42,6 +37,9 @@
                 <td>{{ item.precio|number_format(2) }} Bs</td>
                 <td>{{ item.fechaAt|date("d-m-Y") }}</td>
                 <td>{{ item.fechaIn|date("d-m-Y") }}</td>
+                <td class="link-imagen">
+                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="en-linea">En linea</a>
+                </td>
                 <td class="link-imagen">
                     <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="ajax" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
                 </td>
@@ -58,6 +56,10 @@
         {% endfor %}
         </tbody>
     </table>
-
+</form>
 {{ knp_pagination_render(manosdeobra) }}
 {% endblock cuerpo %}
+{% block javascripts %}
+{{ parent() }}
+        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/manosdeobras.js') }}"></script>
+{% endblock javascripts %}

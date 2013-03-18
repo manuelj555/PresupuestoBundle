@@ -41,7 +41,7 @@ class ManoDeObraForm extends AbstractType {
                     'label' => "Precio",
                     'error_bubbling' => true,
                     'attr' => array(
-                        'class' => "validate[required]",
+                        'class' => "validate[required,custom[number]]",
                     ),
                 ))
         ;

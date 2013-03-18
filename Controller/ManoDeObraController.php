@@ -33,10 +33,13 @@ class ManoDeObraController extends Controller
             throw $this->createNotFoundException("No existe la pagina $page en los resultados de la consulta de las manos de obra");
         }
 
+        $form = $this->createForm(new ManoDeObraForm());
+
         return $this->render("PresupuestoBundle:ManoDeObra:listado.html.twig"
                         , array(
                     'manosdeobra' => $registros,
                     'description' => $description,
+                    'form' => $form->createView(),
                 ));
     }
 
@@ -77,7 +80,6 @@ class ManoDeObraController extends Controller
                 $em->flush();
                 return new SuccessResponse("La Mano de Obra se Guardó con exito");
             } else {
-                var_dump($form->hasErrors(), $form->getErrors(), $form->getErrorsAsString());
                 return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
             }
         }
