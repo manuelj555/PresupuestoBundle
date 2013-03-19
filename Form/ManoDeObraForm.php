@@ -12,7 +12,7 @@ class ManoDeObraForm extends AbstractType {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('descripcion', null, array(
+        $builder->add('descripcion', 'textarea', array(
                     'label' => "Descripción",
                     'error_bubbling' => true,
                     'attr' => array(

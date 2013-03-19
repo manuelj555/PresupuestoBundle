@@ -78,7 +78,7 @@ class ManoDeObraController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($manoDeObra);
                 $em->flush();
-                return new SuccessResponse("La Mano de Obra se Guardó con exito");
+                return new SuccessResponse("La Mano de Obra se Guardó con exito", 'EditManoDeObraSuccess');
             } else {
                 return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
             }

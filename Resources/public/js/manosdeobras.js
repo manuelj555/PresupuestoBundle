@@ -18,6 +18,8 @@ $(".manos_de_obras_list tbody tr").on('click', '.en-linea', function(event) {
     event.preventDefault()
 
     terminarEdicion()
+    
+    $("form.validationEngineContainer").attr("action", $(this).attr('href'))
 
     var tr = $(this).closest("tr").addClass('editando');
     var tbody = $(".manos_de_obras_list tbody").clone();
@@ -43,15 +45,14 @@ $(".manos_de_obras_list tbody tr").on('click', '.en-linea', function(event) {
 })
 $(".manos_de_obras_list tbody tr").on('click', '.guardar', function(event) {
     event.preventDefault()
-    var tr = $(this).closest("tr");
-
-    console.log($(".validationEngineContainer").serialize())
-
-//    var data = {
-//        'descripcion' => 
-//    }
-
+    $("form.validationEngineContainer").submit()
 })
+
+function EditManoDeObraSuccess(mensaje){
+    jgrowlSuccess(mensaje)
+    $(".validationEngineContainer :input").closest("tr").addClass('data-modificada');
+    terminarEdicion()
+}
 
 $(".validationEngineContainer").validationEngine()
 
