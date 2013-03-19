@@ -11,10 +11,12 @@ function terminarEdicion() {
             tr.html(tr.data('original'))
         }
         tr.removeClass("editando data-modificada")
+        tr.find('.botones-edicion').hide(0)
+        tr.find('.link-editar').show(0)
     })
 }
 
-$(".manos_de_obras_list tbody tr").on('click', '.en-linea', function(event) {
+$(".manos_de_obras_list tbody tr").on('click', '.link-editar', function(event) {
     event.preventDefault()
 
     terminarEdicion()
@@ -41,11 +43,16 @@ $(".manos_de_obras_list tbody tr").on('click', '.en-linea', function(event) {
     tr.find('td:eq(2)').html(tiposdeobras)
     tr.find('td:eq(3)').html(precio)
 
-    $(this).removeClass("en-linea").addClass("guardar")
+    $(this).hide(0)
+    tr.find(".botones-edicion").show()
 })
 $(".manos_de_obras_list tbody tr").on('click', '.guardar', function(event) {
     event.preventDefault()
     $("form.validationEngineContainer").submit()
+})
+$(".manos_de_obras_list tbody tr").on('click', '.cancelar', function(event) {
+    event.preventDefault()
+    terminarEdicion()
 })
 
 function EditManoDeObraSuccess(mensaje){

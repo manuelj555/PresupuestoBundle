@@ -23,8 +23,7 @@
             <th>Precio</th>
             <th>Creada</th>
             <th>Actualizada</th>
-            <th>Edit en Linea</th>
-            <th>Editar</th>
+            <th style="width: 50px">Editar</th>
             <th>Eliminar</th>
         </tr>
     </thead>
@@ -38,10 +37,11 @@
                 <td>{{ item.fechaAt|date("d-m-Y") }}</td>
                 <td>{{ item.fechaIn|date("d-m-Y") }}</td>
                 <td class="link-imagen">
-                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="en-linea">En linea</a>
-                </td>
-                <td class="link-imagen">
-                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="ajax" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
+                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="link-editar" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
+                    <div class="botones-edicion">
+                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="guardar" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/default/valid.png") }}" /></a>
+                    <a href="{{ path("manosdeobra_editar",{id:item.id}) }}" class="cancelar" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/default/error.png") }}" /></a>                        
+                    </div>
                 </td>
                 <td class="link-imagen">
                     <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/eliminar.png") }}" /></a>
