@@ -5,13 +5,9 @@
 {% block titulo "Presupuesto" %}
 
 {% block cuerpo %}
-<div class="overflow" style="height:auto;" ng-app="presupuesto">
-<div ng-view></div>
-</div>
-{% endblock %}
-
-{% block editor %}
-    <form id="form_presupuesto" method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}">
+<div id="res-ajax"></div>
+<div class="overflow" style="height:auto;">
+    <form id="form_presupuesto" method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="ajax" data-res="#res-ajax">
         <table class="presupuesto table table-bordered table-striped">
             <thead>
                 <tr>
@@ -58,16 +54,8 @@
             </form>
         </div>
 <div id="listado_manosdeobra"></div>
-{% endblock %}
-
-
+{% endblock cuerpo %}
 {% block javascripts %}
 {{ parent() }}
-        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/angular.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
-        <script type="text/javascript">
-            var parameters = {
-                presupuestoTemplate : '{{ block('editor')|e('js') }}'
-            }
-        </script>
+        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/pre.js') }}"></script>
 {% endblock javascripts %}
