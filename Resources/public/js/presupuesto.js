@@ -2,64 +2,104 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
     $routeProvider.when('/', {template: parameters.presupuestoTemplate, controller: 'editor'})
             .otherwise({redirectTo: '/'})
 })
-.controller('editor', function($scope, $filter) {
+        .controller('editor', function($scope, presupuesto) {
 
-    $scope.descripciones = []
+    $scope.presupuesto = presupuesto
+    $scope.descripciones = presupuesto.descripciones
 
-    $scope.reordenar = function() {
+    $scope.reordenar = presupuesto.reordenarDescripciones
+
+    $scope.add = presupuesto.addDescripcion
+
+    $scope.remove = presupuesto.removeDescripcion
+
+    $scope.total = presupuesto.getTotal
+    $scope.subTotal = presupuesto.subTotal
+
+    $scope.subir = presupuesto.subirDescripcion
+
+    $scope.bajar = presupuesto.bajarDescripcion
+})
+        .factory('presupuesto', function($filter) {
+
+    var presupuesto = {
+        titulo: '',
+        total: 0,
+        descripciones: []
+    }
+    presupuesto.reordenarDescripciones = function() {
         var pos = 1;
-        angular.forEach($scope.descripciones, function(d, index) {
+        angular.forEach(presupuesto.descripciones, function(d) {
             d.posicion = pos++
         })
     }
 
-    $scope.add = function() {
-        $scope.descripciones.push({
+    presupuesto.addDescripcion = function() {
+        presupuesto.descripciones.push({
             descripcion: '',
             subtotal: 0,
             cantidad: 1,
             precio: 0,
-            posicion: $scope.descripciones.length + 1
+            posicion: presupuesto.descripciones.length + 1
         })
     }
 
-    $scope.remove = function(desc) {
-        $scope.descripciones.splice($scope.descripciones.indexOf(desc), 1)
-        $scope.reordenar()
+    presupuesto.removeDescripcion = function(desc) {
+        presupuesto.descripciones.splice(presupuesto.descripciones.indexOf(desc), 1)
+        presupuesto.reordenarDescripciones()
     }
 
-    $scope.total = function() {
+    presupuesto.subTotal = function(desc) {
+        var subtotal = $filter('to_number')(desc.precio) * $filter('to_number')(desc.cantidad)
+        return $filter('number')(subtotal, 2)
+    }
+
+    presupuesto.getTotal = function() {
         var total = 0;
-        angular.forEach($scope.descripciones, function(d) {
-            total += d.precio * d.cantidad
+        angular.forEach(presupuesto.descripciones, function(d) {
+            total += parseFloat(presupuesto.subTotal(d))
         })
-
-        return $filter('number')(total, 2)
+        return presupuesto.total = $filter('number')(total, 2)
     }
 
-    $scope.subir = function(desc) {
-        var index = $scope.descripciones.indexOf(desc)
+    presupuesto.subirDescripcion = function(desc) {
+        var index = presupuesto.descripciones.indexOf(desc)
         if (index > 0) {
-            var actual = $scope.descripciones[index]
-            var anterior = $scope.descripciones[index - 1]
+            var actual = presupuesto.descripciones[index]
+            var anterior = presupuesto.descripciones[index - 1]
             var posTemp = actual.posicion
             actual.posicion = anterior.posicion
             anterior.posicion = posTemp
-            $scope.descripciones.splice(index - 1, 2, actual, anterior)
+            presupuesto.descripciones.splice(index - 1, 2, actual, anterior)
         }
     }
 
-    $scope.bajar = function(desc) {
-        var index = $scope.descripciones.indexOf(desc)
-        if ($scope.descripciones.length - 1 > index) {
-            var actual = $scope.descripciones[index]
-            var siguiente = $scope.descripciones[index + 1]
+    presupuesto.bajarDescripcion = function(desc) {
+        var index = presupuesto.descripciones.indexOf(desc)
+        if (presupuesto.descripciones.length - 1 > index) {
+            var actual = presupuesto.descripciones[index]
+            var siguiente = presupuesto.descripciones[index + 1]
             var posTemp = actual.posicion
             actual.posicion = siguiente.posicion
             siguiente.posicion = posTemp
-            $scope.descripciones.splice(index, 2, siguiente, actual)
+            presupuesto.descripciones.splice(index, 2, siguiente, actual)
         }
     }
 
-    $scope.reordenar()
+    presupuesto.reordenarDescripciones()
+
+    return presupuesto
+})
+.filter('to_number', function() {
+    return function(input) {
+        if (!isNaN(input)) {
+            return input
+        } else {
+            if (!input) {
+                return 0;
+            }
+            input = parseFloat(input.replace(/[^\d|\.]/g, ''));
+            return isNaN(input) ? 0 : input;
+        }
+    }
 })

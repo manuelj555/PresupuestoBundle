@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th colspan="6" style="border-bottom: 1px solid #DDD;">
-                    Título&nbsp;&nbsp;&nbsp;{{ form_widget(form.titulo,{attr:{class:"span7"}}) }}
+                    Título&nbsp;&nbsp;&nbsp;<input type="text" ng-model="presupuesto.titulo" class="span7" />
                 </th>
             </tr>
             <tr>
@@ -56,7 +56,7 @@
                     <td><input type="text" ng-model="desc.descripcion" style="width: 98%" /></td>
                     <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
                     <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>
-                    <td>{{ '{{(desc.precio * desc.cantidad)|number:2}}' }} Bs</td>
+                    <td>{{ '{{subTotal(desc)}}' }} Bs</td>
                     <td class="link-imagen" style="padding-top: 3px;cursor: pointer" ng-dblclick="remove(desc)">
                         <img src="{{ asset("bundles/presupuesto/img/figuras/Error.png") }}" />
                     </td>
@@ -67,7 +67,6 @@
 </div>
 <div id="listado_manosdeobra"></div>
 {% endblock %}
-
 
 {% block javascripts %}
 {{ parent() }}
