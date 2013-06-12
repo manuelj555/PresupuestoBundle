@@ -1,4 +1,4 @@
-{% macro form_descripcion(widget) %}
+{% macro form_descripcion_old(widget) %}
     {% if widget.get('prototype') %}
         {% set form = widget.get('prototype') %}
         {% set name = widget.get('prototype').get('name') %}
@@ -8,8 +8,8 @@
     {% endif %}
     {% set attr_description = { 'attr' : attr|default({style:"width:98%"}) } %}
     {% set attr_precio_cant = { 'attr' : attr|default({style:"width:88%"}) } %}
-<tr>
-    <td class="orden">
+<tr ng-repeat="descripcion in descripciones">
+    <td class="orden">{{'{{descripcion.posicion}}'}}
         <span>{% if form.vars.data.posicion is defined %}{{ form.vars.data.posicion }}{% endif %}</span>
         {{ form_widget(form.posicion) }}
     </td>
@@ -24,4 +24,7 @@
         {{ form_rest(form) }}
     </td>
 </tr>
+{% endmacro %}
+{% macro form_descripcion(widget) %}
+
 {% endmacro %}

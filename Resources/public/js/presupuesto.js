@@ -1,8 +1,56 @@
-var presupuesto = angular.module('presupuesto',[]).config(function($routeProvider){
-    $routeProvider.when('/', { template: parameters.presupuestoTemplate, controller: 'nuevo' })
+var presupuesto = angular.module('presupuesto', []).config(function($routeProvider) {
+    $routeProvider.when('/', {template: parameters.presupuestoTemplate, controller: 'editor'})
+            .otherwise({redirectTo: '/'})
 })
-.controller('nuevo', function(){
-    alert('Hola')
+        .controller('editor', function($scope, $filter) {
+
+    $scope.descripciones = [{
+            descripcion: 'Mi Descripción :-)',
+            subtotal: 0
+        }]
+
+    $scope.reordenar = function() {
+        var pos = 1;
+        angular.forEach($scope.descripciones, function(d, index) {
+            d.posicion = pos++
+        })
+    }
+
+    $scope.add = function() {
+        $scope.descripciones.push({
+            descripcion: '',
+            subtotal: 0,
+            cantidad: 1,
+            precio: 0,
+            posicion: $scope.descripciones.length + 1
+        })
+    }
+
+    $scope.remove = function(desc) {
+        $scope.descripciones.splice($scope.descripciones.indexOf(desc), 1)
+        $scope.reordenar()
+    }
+
+    $scope.total = function() {
+        var total = 0;
+        angular.forEach($scope.descripciones, function(d) {
+            total += d.precio * d.cantidad
+        })
+
+        return $filter('number')(total, 2)
+    }
+
+    $scope.subir = function(desc) {
+        var index = $scope.descripciones.indexOf(desc)
+        if (index > 0) {
+            var actual = $scope.descripciones[index]
+            var anterior = $scope.descripciones[index - 1]
+            var posTemp = actual.posicion
+            actual.posicion = anterior.posicion
+            anterior.posicion = posTemp
+            $scope.descripciones.splice(index - 1, 2, actual, anterior)
+        }
+    }
+
+    $scope.reordenar()
 })
-
-
