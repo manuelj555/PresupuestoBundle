@@ -2,7 +2,8 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
     $routeProvider.when('/', {template: parameters.presupuestoTemplate, controller: 'editor'})
             .otherwise({redirectTo: '/'})
 })
-        .controller('editor', function($scope, presupuesto) {
+
+presupuesto.controller('editor', function($scope, presupuesto) {
 
     $scope.presupuesto = presupuesto
     $scope.descripciones = presupuesto.descripciones
@@ -19,8 +20,10 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
     $scope.subir = presupuesto.subirDescripcion
 
     $scope.bajar = presupuesto.bajarDescripcion
+    
 })
-        .factory('presupuesto', function($filter) {
+
+presupuesto.factory('presupuesto', function($filter) {
 
     var presupuesto = {
         titulo: '',
@@ -34,14 +37,15 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
         })
     }
 
-    presupuesto.addDescripcion = function() {
-        presupuesto.descripciones.push({
+    presupuesto.addDescripcion = function(d) {
+        d = angular.isUndefined(d) ? {} : d;
+        presupuesto.descripciones.push(angular.extend({
             descripcion: '',
             subtotal: 0,
             cantidad: 1,
             precio: 0,
             posicion: presupuesto.descripciones.length + 1
-        })
+        }, d))
     }
 
     presupuesto.removeDescripcion = function(desc) {
@@ -50,16 +54,15 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
     }
 
     presupuesto.subTotal = function(desc) {
-        var subtotal = $filter('to_number')(desc.precio) * $filter('to_number')(desc.cantidad)
-        return $filter('number')(subtotal, 2)
+        return $filter('to_number')(desc.precio) * $filter('to_number')(desc.cantidad)
     }
 
     presupuesto.getTotal = function() {
         var total = 0;
         angular.forEach(presupuesto.descripciones, function(d) {
-            total += parseFloat(presupuesto.subTotal(d))
+            total += presupuesto.subTotal(d)
         })
-        return presupuesto.total = $filter('number')(total, 2)
+        return presupuesto.total = total
     }
 
     presupuesto.subirDescripcion = function(desc) {
@@ -89,8 +92,11 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
     presupuesto.reordenarDescripciones()
 
     return presupuesto
+
 })
-.filter('to_number', function() {
+
+presupuesto.filter('to_number', function() {
+
     return function(input) {
         if (!isNaN(input)) {
             return input
@@ -98,8 +104,41 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
             if (!input) {
                 return 0;
             }
-            input = parseFloat(input.replace(/[^\d|\.]/g, ''));
+            input = parseFloat(input.replace(/[^\d|\.\,]/g, ''));
             return isNaN(input) ? 0 : input;
         }
+    }
+})
+
+presupuesto.factory('manos_de_obra', function() {
+
+    var manosdeobra = {
+        items: []
+    }
+
+    $.ajax({
+        url: parameters.manosDeObraUrl,
+        async: false,
+    }).done(function(data) {
+        manosdeobra.items = data
+    })
+
+    return manosdeobra
+})
+
+presupuesto.controller('manos_de_obra', function($scope, manos_de_obra, presupuesto) {
+
+    $scope.manosdeobra = manos_de_obra.items
+
+    $scope.openModal = function(){
+        $("#modal_manodeobra").modal()
+    }
+    
+    $scope.addObra = function(obra){
+        presupuesto.addDescripcion({
+            descripcion: obra.descripcion,
+            cantidad: 1,
+            precio: obra.precio
+        })
     }
 })

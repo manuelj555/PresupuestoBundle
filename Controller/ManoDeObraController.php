@@ -7,6 +7,7 @@ use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
 use K2\PresupuestoBundle\Response\ErrorResponse;
 use K2\PresupuestoBundle\Response\SuccessResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ManoDeObraController extends Controller
 {
@@ -40,7 +41,7 @@ class ManoDeObraController extends Controller
                     'manosdeobra' => $registros,
                     'description' => $description,
                     'form' => $form->createView(),
-                ));
+        ));
     }
 
     public function agregarAction()
@@ -94,7 +95,7 @@ class ManoDeObraController extends Controller
 
         return $this->render($view, array(
                     'form' => $form->createView(),
-                ));
+        ));
     }
 
     public function getAllAction()
@@ -110,7 +111,20 @@ class ManoDeObraController extends Controller
         return $this->render("PresupuestoBundle:ManoDeObra:all.ajax.html.twig"
                         , array(
                     'manosdeobra' => $result,
-                ));
+        ));
+    }
+
+    public function jsonAction()
+    {
+        $result = $this->getDoctrine()->getEntityManager()
+                ->createQuery("SELECT mdo,tip,med 
+                               FROM PresupuestoBundle:ManosDeObra mdo
+                               JOIN mdo.medidas med
+                               JOIN mdo.tiposDeObras tip
+                               ORDER BY mdo.descripcion")
+                ->getArrayResult();
+
+        return new JsonResponse($result);
     }
 
     /**

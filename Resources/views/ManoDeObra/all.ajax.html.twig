@@ -5,55 +5,32 @@
     </div>
     <div class="modal-body">
         <div class="text-center form-inline">
-                <label>Mano de Obra</label>
-                <input id="manos_de_obra_autocomplete" name="description" value="" type="search" class="span5"/>
-                <input type="reset" class="btn" value="Limpiar" />
+            <label>Mano de Obra</label>
+            <input ng-model="filtro" type="search" class="span5"/>
+            <input type="reset" class="btn" value="Limpiar" />
         </div>
         <br/>
         <table class="table table-bordered table-striped presupuesto-manos-de-obra">
             <thead>
                 <tr>
-                    <th style="width: 70%">Descripción</th>
+                    <th style="width: 60%">Descripción</th>
                     <th style="font-size: 11px">U/medidad</th>
                     <th style="font-size: 10px">Tipo de Trabajo</th>
-                    <th>Precio</th>
+                    <th style="width: 70px">Precio</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th colspan="100">
-
-                    </th>
-                </tr>
-            </tfoot>
             <tbody>
-        {% for item in manosdeobra %}
-                    <tr data-json="{{ json_entity(item) }}">
-                        <td>{{ item.descripcion|escape }}</td>
-                        <td>{{ item.medidas.medida|escape }}</td>
-                        <td>{{ item.tiposDeObras.nombre|escape }}</td>
-                        <td>{{ item.precio|number_format(2) }} Bs</td>
-                    </tr>
-        {% else %}
-                    <tr>
-                        <td colspan="100">
-                            No exisen Manos de Obra
-                        </td>
-                    </tr>
-        {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="btn">Cerrar</a>
-            <input type="submit" class="btn btn-primary" value="Guardar" />
-        </div>
+                <tr ng-click="addObra(obra)" ng-repeat="obra in manosdeobra|filter:filtro|orderBy:'descripcion'">
+                    <td>{{ '{{obra.descripcion}}' }}</td>
+                    <td>{{ '{{obra.medidas.medida}}' }}</td>
+                    <td>{{ '{{obra.tiposDeObras.nombre}}' }}</td>
+                    <td>{{ '{{obra.precio|number:2}}' }} Bs</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-<script type="text/javascript" >
-        $("#manos_de_obra_autocomplete").on('keyup change',function(event){
-            event.preventDefault()
-            if(event.keyCode == 13){
-                filtrarListado()                
-            }
-        })
-</script>
+    <div class="modal-footer">
+        <a href="#" data-dismiss="modal" class="btn">Cerrar</a>
+        <input type="submit" class="btn btn-primary" value="Guardar" />
+    </div>
+</div>

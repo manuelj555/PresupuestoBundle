@@ -4,7 +4,10 @@
 
 {% block cuerpo %}
 <div class="overflow" style="height:auto;" ng-app="presupuesto">
-    <div ng-view></div>
+    <div ng-controller="manos_de_obra">
+        <div ng-view></div>
+        {% include 'PresupuestoBundle:ManoDeObra:all.ajax.html.twig' %}
+    </div>
 </div>
 {% endblock %}
 
@@ -29,7 +32,7 @@
         <tfoot>
             <tr>
                 <td colspan="2">
-                    <a class="btn mostrar-manos-de-obra" href="{{ path("manosdeobra_all_modal") }}">+ Mano De Obra</a>
+                    <a class="btn " ng-click="openModal()">+ Mano De Obra</a>
                     <a class="btn" ng-click="add()">+ linea vacia</a>
                         {% if presupuesto.id is not null %}
                     <a href="{{ path("presupuesto_export",{id : presupuesto.id}) }}" target="_blank" class="btn">Imprimir</a>
@@ -42,7 +45,7 @@
                     <b>TOTAL :</b>
                 </td>
                 <td colspan="2" style="text-align: center;font-size: 18px;vertical-align: middle" class="total">
-                        {{ '{{total()}}' }} Bs
+                        {{ '{{total()|number:2}}' }} Bs
                     </td>
                 </tr>
             </tfoot>
@@ -56,7 +59,7 @@
                     <td><input type="text" ng-model="desc.descripcion" style="width: 98%" /></td>
                     <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
                     <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>
-                    <td>{{ '{{subTotal(desc)}}' }} Bs</td>
+                    <td style="text-align: right;padding: 5px 10px 0 0">{{ '{{subTotal(desc)|number:2}}' }} Bs</td>
                     <td class="link-imagen" style="padding-top: 3px;cursor: pointer" ng-dblclick="remove(desc)">
                         <img src="{{ asset("bundles/presupuesto/img/figuras/Error.png") }}" />
                     </td>
@@ -64,18 +67,17 @@
             </tbody>
         </table>
     </form>
-</div>
-<div id="listado_manosdeobra"></div>
 {% endblock %}
 
 {% block javascripts %}
 {{ parent() }}
-<script type="text/javascript" src="{{ asset('bundles/presupuesto/js/angular.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
-<script type="text/javascript">
-    var parameters = {
-        presupuestoTemplate: '{{ block('editor')|e('js') }}',
-        descripciones: []
-    }
-    </script>
+    <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/angular.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
+    <script type="text/javascript">
+        var parameters = {
+            presupuestoTemplate: '{{ block('editor')|e('js') }}',
+            manosDeObraUrl: '{{ path("manosdeobra_all_json") }}',
+            descripciones: []
+        }
+        </script>
 {% endblock javascripts %}

@@ -41,3 +41,6 @@ manosdeobra_editar:
 manosdeobra_all_modal:
     pattern:  /manosdeobra/todas
     defaults: { _controller: PresupuestoBundle:ManoDeObra:getAll }
+manosdeobra_all_json:
+    pattern:  /manosdeobra/json
+    defaults: { _controller: PresupuestoBundle:ManoDeObra:json }
