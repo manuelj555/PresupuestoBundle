@@ -48,7 +48,11 @@
             </tfoot>
             <tbody class="listado-descripciones">
                 <tr ng-repeat="desc in descripciones">
-                    <td ng-click="subir(desc)">{{'{{desc.posicion}}'}}</td>
+                    <td class="td-posicion">
+                        <span><i class="icon-chevron-up" ng-click="subir(desc)" ></i>
+                            <i class="icon-chevron-down" ng-click="bajar(desc)" ></i></span>
+                        <span>{{'{{desc.posicion}}'}}</span>
+                    </td>
                     <td><input type="text" ng-model="desc.descripcion" style="width: 98%" /></td>
                     <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
                     <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>

@@ -2,12 +2,9 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
     $routeProvider.when('/', {template: parameters.presupuestoTemplate, controller: 'editor'})
             .otherwise({redirectTo: '/'})
 })
-        .controller('editor', function($scope, $filter) {
+.controller('editor', function($scope, $filter) {
 
-    $scope.descripciones = [{
-            descripcion: 'Mi Descripción :-)',
-            subtotal: 0
-        }]
+    $scope.descripciones = []
 
     $scope.reordenar = function() {
         var pos = 1;
@@ -49,6 +46,18 @@ var presupuesto = angular.module('presupuesto', []).config(function($routeProvid
             actual.posicion = anterior.posicion
             anterior.posicion = posTemp
             $scope.descripciones.splice(index - 1, 2, actual, anterior)
+        }
+    }
+
+    $scope.bajar = function(desc) {
+        var index = $scope.descripciones.indexOf(desc)
+        if ($scope.descripciones.length - 1 > index) {
+            var actual = $scope.descripciones[index]
+            var siguiente = $scope.descripciones[index + 1]
+            var posTemp = actual.posicion
+            actual.posicion = siguiente.posicion
+            siguiente.posicion = posTemp
+            $scope.descripciones.splice(index, 2, siguiente, actual)
         }
     }
 

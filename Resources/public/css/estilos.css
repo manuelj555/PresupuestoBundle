@@ -81,3 +81,6 @@ td.orden{
 .manos_de_obras_list select,
 .manos_de_obras_list textarea,
 .manos_de_obras_list input{width: 90%}
+.td-posicion > span{line-height: 30px;vertical-align: top;display: inline-block;margin-left: 10px}
+.td-posicion i{display: none}
+.td-posicion:hover i{display: block}
