@@ -81,3 +81,5 @@ td.orden{
 .manos_de_obras_list select,
 .manos_de_obras_list textarea,
 .manos_de_obras_list input{width: 90%}
+.presupuesto-manos-de-obra tbody td{cursor: pointer}
+#modal_manodeobra{width: 60%;margin-left: -30%}

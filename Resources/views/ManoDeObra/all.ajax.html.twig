@@ -1,4 +1,4 @@
-<div id="modal_manodeobra" class="modal fade" style="width: 60%">
+<div id="modal_manodeobra" class="modal fade">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Manos de Obra</h3>
@@ -7,7 +7,7 @@
         <div class="text-center form-inline">
                 <label>Mano de Obra</label>
                 <input id="manos_de_obra_autocomplete" name="description" value="" type="search" class="span5"/>
-                <input type="reset" class="btn" value="Limpiar" />
+                <input type="reset" class="btn btn-clear" value="Limpiar" />
         </div>
         <br/>
         <table class="table table-bordered table-striped presupuesto-manos-de-obra">
@@ -45,7 +45,6 @@
             </table>
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn">Cerrar</a>
             <input type="submit" class="btn btn-primary" value="Guardar" />
         </div>
     </div>
@@ -55,5 +54,9 @@
             if(event.keyCode == 13){
                 filtrarListado()                
             }
+        })
+        $('.btn-clear').on('click',function(event){
+            event.preventDefault()
+            $("#manos_de_obra_autocomplete").val('')
         })
 </script>

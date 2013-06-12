@@ -85,5 +85,6 @@ $(".mostrar-manos-de-obra").on('click', function(event) {
     } else {
         $("#modal_manodeobra").modal();
     }
+    $("#manos_de_obra_autocomplete").val('')
 })
 
