@@ -4,80 +4,77 @@
 
 {% block cuerpo %}
 <div class="overflow" style="height:auto;" ng-app="presupuesto">
-    <div ng-controller="manos_de_obra">
-        <div ng-view></div>
-        {% include 'PresupuestoBundle:ManoDeObra:all.ajax.html.twig' %}
+    <div ng-controller="mainCtrl">
+        <div ng-controller="modalCtrl">
+            <form id="form_presupuesto" ng-submit="reordenar()">
+                <table class="presupuesto table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="6" style="border-bottom: 1px solid #DDD;">
+                                Título&nbsp;&nbsp;&nbsp;<input type="text" ng-model="presupuesto.titulo" class="span7" />
+                            </th>
+                        </tr>
+                        <tr>
+                            <th style="width: 30px;">Orden</th>
+                            <th style="width: 530px;">Mano de Obra</th>
+                            <th style="width: 70px;">Bs</th>
+                            <th style="width: 70px;font-size: 13px;">Cant</th>
+                            <th style="width: 90px;">SubTotal Bs</th>
+                            <th style="width: 40px;">Remover</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn " ng-click="showModal()">+ Mano De Obra</a>
+                                <a class="btn" ng-click="add()">+ linea vacia</a>
+                                {% if presupuesto.id is not null %}
+                                <a href="{{ path("presupuesto_export",{id : presupuesto.id}) }}" target="_blank" class="btn">Imprimir</a>
+                                {% else %}
+                                <a href="#" target="_blank" class="btn disabled">Imprimir</a>
+                                {% endif %}
+                                <input class="btn pull-right guardar" value="Guardar" type="submit" />
+                            </td>
+                            <td colspan="2" style="text-align: right;padding-right: 20px;vertical-align: middle">
+                                <b>TOTAL :</b>
+                            </td>
+                            <td colspan="2" style="text-align: center;font-size: 18px;vertical-align: middle" class="total">
+                                {{ '{{total()|number:2}}' }} Bs
+                            </td>
+                        </tr>
+                    </tfoot>
+                    <tbody class="listado-descripciones">
+                        <tr ng-repeat="desc in descripciones">
+                            <td class="td-posicion">
+                                <span><i class="icon-chevron-up" ng-click="subir(desc)" ></i>
+                                    <i class="icon-chevron-down" ng-click="bajar(desc)" ></i>
+                                </span>
+                                <span>{{'{{desc.posicion}}'}}</span>
+                            </td>
+                            <td><input type="text" ng-model="desc.descripcion" style="width: 98%" /></td>
+                            <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
+                            <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>
+                            <td style="text-align: right;padding: 5px 10px 0 0">{{ '{{subTotal(desc)|number:2}}' }} Bs</td>
+                            <td class="link-imagen" style="padding-top: 3px;cursor: pointer" ng-dblclick="remove(desc)">
+                                <img src="{{ asset("bundles/presupuesto/img/figuras/Error.png") }}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            {% include 'PresupuestoBundle:ManoDeObra:all.ajax.html.twig' %}
+        </div>
     </div>
 </div>
 {% endblock %}
 
-{% block editor %}
-<form id="form_presupuesto" ng-submit="reordenar()">
-    <table class="presupuesto table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th colspan="6" style="border-bottom: 1px solid #DDD;">
-                    Título&nbsp;&nbsp;&nbsp;<input type="text" ng-model="presupuesto.titulo" class="span7" />
-                </th>
-            </tr>
-            <tr>
-                <th style="width: 30px;">Orden</th>
-                <th style="width: 530px;">Mano de Obra</th>
-                <th style="width: 70px;">Bs</th>
-                <th style="width: 70px;font-size: 13px;">Cant</th>
-                <th style="width: 90px;">SubTotal Bs</th>
-                <th style="width: 40px;">Remover</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <td colspan="2">
-                    <a class="btn " ng-click="openModal()">+ Mano De Obra</a>
-                    <a class="btn" ng-click="add()">+ linea vacia</a>
-                        {% if presupuesto.id is not null %}
-                    <a href="{{ path("presupuesto_export",{id : presupuesto.id}) }}" target="_blank" class="btn">Imprimir</a>
-                        {% else %}
-                    <a href="#" target="_blank" class="btn disabled">Imprimir</a>
-                        {% endif %}
-                    <input class="btn pull-right guardar" value="Guardar" type="submit" />
-                </td>
-                <td colspan="2" style="text-align: right;padding-right: 20px;vertical-align: middle">
-                    <b>TOTAL :</b>
-                </td>
-                <td colspan="2" style="text-align: center;font-size: 18px;vertical-align: middle" class="total">
-                        {{ '{{total()|number:2}}' }} Bs
-                    </td>
-                </tr>
-            </tfoot>
-            <tbody class="listado-descripciones">
-                <tr ng-repeat="desc in descripciones">
-                    <td class="td-posicion">
-                        <span><i class="icon-chevron-up" ng-click="subir(desc)" ></i>
-                            <i class="icon-chevron-down" ng-click="bajar(desc)" ></i></span>
-                        <span>{{'{{desc.posicion}}'}}</span>
-                    </td>
-                    <td><input type="text" ng-model="desc.descripcion" style="width: 98%" /></td>
-                    <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
-                    <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>
-                    <td style="text-align: right;padding: 5px 10px 0 0">{{ '{{subTotal(desc)|number:2}}' }} Bs</td>
-                    <td class="link-imagen" style="padding-top: 3px;cursor: pointer" ng-dblclick="remove(desc)">
-                        <img src="{{ asset("bundles/presupuesto/img/figuras/Error.png") }}" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
-{% endblock %}
-
 {% block javascripts %}
 {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/angular.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
-    <script type="text/javascript">
-        var parameters = {
-            presupuestoTemplate: '{{ block('editor')|e('js') }}',
-            manosDeObraUrl: '{{ path("manosdeobra_all_json") }}',
-            descripciones: []
-        }
-        </script>
+<script type="text/javascript" src="{{ asset('bundles/presupuesto/js/angular.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
+<script type="text/javascript">
+var parameters = {
+    manosDeObraUrl: '{{ path("manosdeobra_all_json") }}'
+}
+</script>
 {% endblock javascripts %}

@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-click="addObra(obra)" ng-repeat="obra in manosdeobra|filter:filtro|orderBy:'descripcion'">
+                <tr ng-click="addObra(obra)" ng-repeat="obra in manosdeobra |filter:filtro|orderBy:'descripcion'">
                     <td>{{ '{{obra.descripcion}}' }}</td>
                     <td>{{ '{{obra.medidas.medida}}' }}</td>
                     <td>{{ '{{obra.tiposDeObras.nombre}}' }}</td>

@@ -1,9 +1,12 @@
 var presupuesto = angular.module('presupuesto', []).config(function($routeProvider) {
-    $routeProvider.when('/', {template: parameters.presupuestoTemplate, controller: 'editor'})
-            .otherwise({redirectTo: '/'})
+    /*$routeProvider.when('/obras', {
+        template: parameters.modalTemplate, 
+        controller: 'modalCtrl'
+    })
+    .otherwise({redirectTo: ''})*/
 })
 
-presupuesto.controller('editor', function($scope, presupuesto) {
+presupuesto.controller('mainCtrl', function($scope, presupuesto) {
 
     $scope.presupuesto = presupuesto
     $scope.descripciones = presupuesto.descripciones
@@ -20,7 +23,7 @@ presupuesto.controller('editor', function($scope, presupuesto) {
     $scope.subir = presupuesto.subirDescripcion
 
     $scope.bajar = presupuesto.bajarDescripcion
-    
+        
 })
 
 presupuesto.factory('presupuesto', function($filter) {
@@ -116,29 +119,39 @@ presupuesto.factory('manos_de_obra', function() {
         items: []
     }
 
-    $.ajax({
-        url: parameters.manosDeObraUrl,
-        async: false,
-    }).done(function(data) {
-        manosdeobra.items = data
-    })
+    var cargados = false
+
+    manosdeobra.getAll = function(){
+        if(!cargados){
+            $.ajax({
+                url: parameters.manosDeObraUrl,
+                async: false,
+            }).done(function(data) {
+                manosdeobra.items = data
+                cargados = true
+            })            
+        }
+
+        return manosdeobra.items
+    }
+
 
     return manosdeobra
 })
 
-presupuesto.controller('manos_de_obra', function($scope, manos_de_obra, presupuesto) {
-
-    $scope.manosdeobra = manos_de_obra.items
-
-    $scope.openModal = function(){
-        $("#modal_manodeobra").modal()
-    }
+presupuesto.controller('modalCtrl', function ($scope, presupuesto, manos_de_obra) {
     
     $scope.addObra = function(obra){
         presupuesto.addDescripcion({
             descripcion: obra.descripcion,
             cantidad: 1,
-            precio: obra.precio
+            precio: obra.precio + ' ' + obra.medidas.medida
         })
+    }
+
+    $scope.showModal = function(){
+        $("#modal_manodeobra").modal()
+        $scope.manosdeobra = manos_de_obra.getAll()
+        console.log($scope.manosdeobra)
     }
 })
