@@ -4,7 +4,7 @@
     "require": {
         "php": ">=5.3.3",
         "knplabs/knp-paginator-bundle": "dev-master",
-        "CodePlex/PHPExcel": "dev-master"
+        "CodePlex/PHPExcel": "*"
     },
     "scripts": {
         "post-install-cmd": [
