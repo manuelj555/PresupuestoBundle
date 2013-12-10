@@ -3,7 +3,7 @@
     "description": "Bundle para la creación de presupuestos de trabajos de construcción",
     "require": {
         "php": ">=5.3.3",
-        "knplabs/knp-paginator-bundle": "2.3.*@dev",
+        "knplabs/knp-paginator-bundle": "dev-master",
         "CodePlex/PHPExcel": "dev-master"
     },
     "scripts": {
@@ -27,6 +27,5 @@
     "autoload":{
         "psr-0": { "K2\\PresupuestoBundle" : "" }
     },
-    "target-dir": "K2/PresupuestoBundle",
-    "minimum-stability": "dev"
+    "target-dir": "K2/PresupuestoBundle"
 }
