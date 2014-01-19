@@ -4,37 +4,36 @@ namespace K2\PresupuestoBundle\Controller;
 
 use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
+use K2\PresupuestoBundle\Model\ManoDeObraManager;
 use K2\PresupuestoBundle\Response\ErrorResponse;
 use K2\PresupuestoBundle\Response\SuccessResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ManoDeObraController extends Controller
 {
 
-    public function listadoAction($page, $description)
+    public function listadoAction(Request $request, $page, $description)
     {
-        if ($this->getRequest()->isMethod('POST')) {
+        $manager = $this->getManager();
+
+        if ($request->isMethod('POST')) {
             $description = $this->getRequest()->request->get("description");
             return $this->redirect($this->generateUrl('manosdeobra_listado'
                                     , array('description' => $description)));
         }
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("SELECT mdo,tip,med 
-                               FROM PresupuestoBundle:ManosDeObra mdo
-                               JOIN mdo.medidas med
-                               JOIN mdo.tiposDeObras tip
-                               WHERE mdo.descripcion LIKE :description
-                               ORDER BY mdo.descripcion")
-                ->setParameter('description', "%$description%");
+
+        $query = $manager->getManoDeObraRepository()
+                ->queryAllManosDeObra();
 
         $registros = $this->get("knp_paginator")->paginate($query, $page);
 
-        if ($page > 1 and $registros->count() == 0) {
-            throw $this->createNotFoundException("No existe la pagina $page en los resultados de la consulta de las manos de obra");
-        }
+//        if ($page > 1 and $registros->count() == 0) {
+//            throw $this->createNotFoundException("No existe la pagina $page en los resultados de la consulta de las manos de obra");
+//        }
 
-        $form = $this->createForm(new ManoDeObraForm());
+        $form = $manager->getForm(new ManosDeObra());
 
         return $this->render("PresupuestoBundle:ManoDeObra:listado.html.twig"
                         , array(
@@ -44,14 +43,15 @@ class ManoDeObraController extends Controller
         ));
     }
 
-    public function agregarAction()
+    public function agregarAction(Request $request)
     {
+        $manager = $this->getManager();
         $manoDeObra = new ManosDeObra();
 
-        $form = $this->createForm(new ManoDeObraForm(), $manoDeObra);
+        $form = $manager->getForm($manoDeObra);
 
-        if ($this->getRequest()->isMethod('POST')) {
-            $data = json_decode($this->getRequest()->getContent(), true);
+        if ($request->isMethod('POST')) {
+            $data = json_decode($request->getContent(), true);
             $form->bind($data[$form->getName()]);
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
@@ -100,13 +100,8 @@ class ManoDeObraController extends Controller
 
     public function getAllAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $result = $em->createQuery("SELECT mdo,tip,med 
-                               FROM PresupuestoBundle:ManosDeObra mdo
-                               JOIN mdo.medidas med
-                               JOIN mdo.tiposDeObras tip
-                               ORDER BY mdo.descripcion")
-                ->getResult();
+        $result = $this->getManager()
+                ->getAllManosDeObra();
 
         return $this->render("PresupuestoBundle:ManoDeObra:all.ajax.html.twig"
                         , array(
@@ -116,33 +111,19 @@ class ManoDeObraController extends Controller
 
     public function jsonAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $result = $em->createQuery("SELECT mdo,tip,med 
-                               FROM PresupuestoBundle:ManosDeObra mdo
-                               JOIN mdo.medidas med
-                               JOIN mdo.tiposDeObras tip
-                               ORDER BY mdo.descripcion")
-                ->getArrayResult();
+        $result = $this->getManager()
+                ->getAllManosDeObra();
 
         return new JsonResponse($result);
     }
 
     /**
      * 
-     * @param int $id
-     * @return ManosDeObra
+     * @return ManoDeObraManager
      */
-    protected function getEntity($id)
+    protected function getManager()
     {
-        $manoDeObra = $this->getDoctrine()
-                ->getRepository("PresupuestoBundle:ManosDeObra")
-                ->find($id);
-
-        if (!$manoDeObra) {
-            throw $this->createNotFoundException("No existe la Mano de Obra $id");
-        }
-
-        return $manoDeObra;
+        return $this->get('presupuesto.manodeobra_manager');
     }
 
 }

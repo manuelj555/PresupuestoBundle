@@ -13,3 +13,11 @@ services:
         class: K2\PresupuestoBundle\Twig\PresupuestoExtension
         tags:
           - {name: twig.extension}
+          
+    presupuesto.manodeobra_manager:
+        class: K2\PresupuestoBundle\Model\ManoDeObraManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory
+            - 'PresupuestoBundle:ManosDeObra'
+            - 'PresupuestoBundle:Presupuestos'

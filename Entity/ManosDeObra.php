@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ExecutionContext;
  *
  * @Assert\Callback(methods={"esPrecioFloat"})
  * @ORM\Table(name="manos_de_obra")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ManoDeObraRepository")
  */
 class ManosDeObra {
 
