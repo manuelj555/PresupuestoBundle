@@ -2,33 +2,36 @@
 
 namespace K2\PresupuestoBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Closure;
 use K2\PresupuestoBundle\Entity\Presupuestos;
 use K2\PresupuestoBundle\Form\PresupuestoForm;
-use K2\PresupuestoBundle\Response\SuccessResponse;
 use K2\PresupuestoBundle\Response\ErrorResponse;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use K2\PresupuestoBundle\Response\RedirectResponse;
+use K2\PresupuestoBundle\Response\SuccessResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PresupuestoController extends Controller
 {
 
     public function listadoAction($page)
     {
-        $query = $this->getDoctrine()->getEntityManager()
-                ->createQuery("SELECT p FROM PresupuestoBundle:Presupuestos p");
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("SELECT p FROM PresupuestoBundle:Presupuestos p");
 
         $presupuestos = $this->get("knp_paginator")->paginate($query, $page);
 
         return $this->render("PresupuestoBundle:Presupuesto:listado.html.twig", array(
                     'presupuestos' => $presupuestos,
-                ));
+        ));
     }
 
-    public function edicionAction($id)
+    /**
+     * @ParamConverter("presupuesto", class="PresupuestoBundle:Presupuestos")
+     */
+    public function edicionAction(Presupuestos $presupuesto)
     {
-        $presupuesto = $this->getPresupuesto($id);
-
         $form = $this->createForm(new PresupuestoForm(), $presupuesto);
 
         if ($this->getRequest()->isMethod('POST')) {
@@ -46,7 +49,7 @@ class PresupuestoController extends Controller
                     return new RedirectResponse($this
                                     ->generateUrl("presupuesto_edicion", array(
                                         'id' => $presupuesto->getId(),
-                                    )));
+                    )));
                 } else {
                     return new SuccessResponse("Presupuesto Guardado");
                 }
@@ -59,47 +62,20 @@ class PresupuestoController extends Controller
                         , array(
                     'form' => $form->createView(),
                     'presupuesto' => $presupuesto,
-                ));
+        ));
     }
 
     /**
-     * 
-     * @param int $id
-     * @return Presupuestos 
+     * @ParamConverter("presupuesto", class="PresupuestoBundle:Presupuestos")
      */
-    protected function getPresupuesto($id)
+    public function exportAction(Presupuestos $presupuesto)
     {
-        if (null !== $id) {
-
-            $presupuesto = $this->getDoctrine()
-                    ->getEntityManager()
-                    ->createQuery("SELECT p 
-                                   FROM PresupuestoBundle:Presupuestos p
-                                   LEFT JOIN p.descripciones des
-                                   WHERE p.id = :id")
-                    ->setParameter("id", $id, \PDO::PARAM_INT)
-                    ->getOneOrNullResult();
-
-            if (!$presupuesto) {
-                throw $this->createNotFoundException("No existe el presupuesto $id");
-            }
-        } else {
-            $presupuesto = new Presupuestos();
-        }
-
-        return $presupuesto;
-    }
-
-    public function exportAction($id)
-    {
-        $presupuesto = $this->getPresupuesto($id);
-
         return $this->prepareExport(function()use ($presupuesto) {
-                            require "/../Resources/views/Presupuesto/presupuesto.xls.php";
-                        }, $presupuesto->getTitulo());
+                    require "/../Resources/views/Presupuesto/presupuesto.xls.php";
+                }, $presupuesto->getTitulo());
     }
 
-    protected function prepareExport(\Closure $function, $filename = 'report')
+    protected function prepareExport(Closure $function, $filename = 'report')
     {
         $response = new StreamedResponse($function);
         $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

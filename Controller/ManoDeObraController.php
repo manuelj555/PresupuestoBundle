@@ -2,11 +2,11 @@
 
 namespace K2\PresupuestoBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
 use K2\PresupuestoBundle\Response\ErrorResponse;
 use K2\PresupuestoBundle\Response\SuccessResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ManoDeObraController extends Controller
@@ -19,8 +19,8 @@ class ManoDeObraController extends Controller
             return $this->redirect($this->generateUrl('manosdeobra_listado'
                                     , array('description' => $description)));
         }
-        $query = $this->getDoctrine()->getEntityManager()
-                ->createQuery("SELECT mdo,tip,med 
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("SELECT mdo,tip,med 
                                FROM PresupuestoBundle:ManosDeObra mdo
                                JOIN mdo.medidas med
                                JOIN mdo.tiposDeObras tip
@@ -54,7 +54,7 @@ class ManoDeObraController extends Controller
             $data = json_decode($this->getRequest()->getContent(), true);
             $form->bind($data[$form->getName()]);
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($manoDeObra);
                 $em->flush();
                 return new SuccessResponse("La Mano de Obra se Guardó con exito");
@@ -76,7 +76,7 @@ class ManoDeObraController extends Controller
             $data = json_decode($this->getRequest()->getContent(), true);
             $form->bind($data[$form->getName()]);
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($manoDeObra);
                 $em->flush();
                 return new SuccessResponse("La Mano de Obra se Guardó con exito", 'EditManoDeObraSuccess');
@@ -100,8 +100,8 @@ class ManoDeObraController extends Controller
 
     public function getAllAction()
     {
-        $result = $this->getDoctrine()->getEntityManager()
-                ->createQuery("SELECT mdo,tip,med 
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->createQuery("SELECT mdo,tip,med 
                                FROM PresupuestoBundle:ManosDeObra mdo
                                JOIN mdo.medidas med
                                JOIN mdo.tiposDeObras tip
@@ -116,8 +116,8 @@ class ManoDeObraController extends Controller
 
     public function jsonAction()
     {
-        $result = $this->getDoctrine()->getEntityManager()
-                ->createQuery("SELECT mdo,tip,med 
+        $em = $this->getDoctrine()->getManager();
+        $result = $em->createQuery("SELECT mdo,tip,med 
                                FROM PresupuestoBundle:ManosDeObra mdo
                                JOIN mdo.medidas med
                                JOIN mdo.tiposDeObras tip
