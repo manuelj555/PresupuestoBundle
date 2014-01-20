@@ -20,4 +20,10 @@ services:
             - @doctrine.orm.entity_manager
             - @form.factory
             - 'PresupuestoBundle:ManosDeObra'
+          
+    presupuesto.manager:
+        class: K2\PresupuestoBundle\Model\PresupuestoManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory
             - 'PresupuestoBundle:Presupuestos'

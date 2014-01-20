@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManager;
  * Presupuestos
  *
  * @ORM\Table(name="presupuestos")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="PresupuestoRepository")
  */
 class Presupuestos
 {

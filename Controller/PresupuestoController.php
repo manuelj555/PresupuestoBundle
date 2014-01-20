@@ -4,47 +4,67 @@ namespace K2\PresupuestoBundle\Controller;
 
 use Closure;
 use K2\PresupuestoBundle\Entity\Presupuestos;
-use K2\PresupuestoBundle\Form\PresupuestoForm;
+use K2\PresupuestoBundle\Model\PresupuestoManager;
+use K2\PresupuestoBundle\Report;
 use K2\PresupuestoBundle\Response\ErrorResponse;
 use K2\PresupuestoBundle\Response\RedirectResponse;
 use K2\PresupuestoBundle\Response\SuccessResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PresupuestoController extends Controller
 {
 
+    /**
+     * 
+     * @return PresupuestoManager
+     */
+    protected function getManager()
+    {
+        return $this->get('presupuesto.manager');
+    }
+
+    /**
+     * 
+     * @param type $page
+     * @return type
+     * @Template()
+     */
     public function listadoAction($page)
     {
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("SELECT p FROM PresupuestoBundle:Presupuestos p");
+        $query = $this->getManager()
+                ->getRepository()
+                ->queryAll();
 
-        $presupuestos = $this->get("knp_paginator")->paginate($query, $page);
+        $presupuestos = $this->get("knp_paginator")
+                ->paginate($query, $page);
 
-        return $this->render("PresupuestoBundle:Presupuesto:listado.html.twig", array(
-                    'presupuestos' => $presupuestos,
-        ));
+        return array(
+            'presupuestos' => $presupuestos,
+        );
     }
 
     /**
      * @ParamConverter("presupuesto", class="PresupuestoBundle:Presupuestos")
+     * @Template("PresupuestoBundle:Presupuesto:presupuesto.html.twig")
      */
-    public function edicionAction(Presupuestos $presupuesto)
+    public function edicionAction(Request $request, Presupuestos $presupuesto = null)
     {
-        $form = $this->createForm(new PresupuestoForm(), $presupuesto);
+        $isNew = $presupuesto === null;
+        $manager = $this->getManager();
+        $form = $manager->getForm($presupuesto);
 
         if ($this->getRequest()->isMethod('POST')) {
 
-            $descripcionesOriginales = $presupuesto->getDescripciones()->toArray();
-
-            $data = json_decode($this->getRequest()->getContent(), true);
+            $data = json_decode($request->getContent(), true);
             $form->bind($data[$form->getName()]);
+
             if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $presupuesto->guardar($em, $descripcionesOriginales);
-                $em->flush();
-                if ($id === null) {
+                $manager->save($presupuesto);
+                if ($isNew) {
                     //si es nuevo redireccionamos a editar
                     return new RedirectResponse($this
                                     ->generateUrl("presupuesto_edicion", array(
@@ -58,11 +78,10 @@ class PresupuestoController extends Controller
             }
         }
 
-        return $this->render("PresupuestoBundle:Presupuesto:presupuesto.html.twig"
-                        , array(
-                    'form' => $form->createView(),
-                    'presupuesto' => $presupuesto,
-        ));
+        return array(
+            'form' => $form->createView(),
+            'presupuesto' => $presupuesto,
+        );
     }
 
     /**
@@ -71,7 +90,7 @@ class PresupuestoController extends Controller
     public function exportAction(Presupuestos $presupuesto)
     {
         return $this->prepareExport(function()use ($presupuesto) {
-                    require "/../Resources/views/Presupuesto/presupuesto.xls.php";
+                    Report\Presupuesto::excel($presupuesto);
                 }, $presupuesto->getTitulo());
     }
 

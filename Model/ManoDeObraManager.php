@@ -28,17 +28,15 @@ class ManoDeObraManager
      */
     protected $formFactory;
     protected $manoDeObraRepository;
-    protected $presupuestoRepository;
 
-    function __construct(EntityManager $em, FormFactoryInterface $formFactory, $manoDeObraRepository, $presupuestoRepository)
+    function __construct(EntityManager $em, FormFactoryInterface $formFactory, $manoDeObraRepository)
     {
         $this->em = $em;
         $this->formFactory = $formFactory;
         $this->manoDeObraRepository = $manoDeObraRepository;
-        $this->presupuestoRepository = $presupuestoRepository;
     }
 
-    public function getForm(ManosDeObra $m)
+        public function getForm(ManosDeObra $m)
     {
         return $this->formFactory->create(new ManoDeObraForm(), $m);
     }
