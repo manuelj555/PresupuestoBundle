@@ -92,6 +92,14 @@ output {
   vertical-align: middle;
 }
 
+// Placeholder
+//
+// Placeholder text gets special styles because when browsers invalidate entire
+// lines if it doesn't understand a selector/
+.form-control {
+  .placeholder();
+}
+
 
 // Common form controls
 //
@@ -133,12 +141,6 @@ output {
 
   // Customize the `:focus` state to imitate native WebKit styles.
   .form-control-focus();
-
-  // Placeholder
-  //
-  // Placeholder text gets special styles because when browsers invalidate entire
-  // lines if it doesn't understand a selector/
-  .placeholder();
 
   // Disabled and read-only inputs
   // Note: HTML5 says that controls under a fieldset > legend:first-child won't
@@ -265,6 +267,7 @@ input[type="checkbox"],
 
 .form-control-static {
   margin-bottom: 0; // Remove default margin from `p`
+  padding-top: (@padding-base-vertical + 1);
 }
 
 
@@ -309,11 +312,6 @@ input[type="checkbox"],
       display: inline-block;
     }
 
-    // Override `width: 100%;` when not within a `.form-group`
-    select.form-control {
-      width: auto;
-    }
-
     // Remove default margin on radios/checkboxes that were used for stacking, and
     // then undo the floating of radios and checkboxes to match (which also avoids
     // a bug in WebKit: https://github.com/twbs/bootstrap/issues/1969).
@@ -350,20 +348,10 @@ input[type="checkbox"],
     margin-bottom: 0;
     padding-top: (@padding-base-vertical + 1); // Default padding plus a border
   }
-  // Account for padding we're adding to ensure the alignment and of help text
-  // and other content below items
-  .radio,
-  .checkbox {
-    min-height: @line-height-computed + (@padding-base-vertical + 1);
-  }
 
   // Make form groups behave like rows
   .form-group {
     .make-row();
-  }
-
-  .form-control-static {
-    padding-top: (@padding-base-vertical + 1);
   }
 
   // Only right align form labels here when the columns stop stacking
