@@ -26,4 +26,19 @@ class ManoDeObraRepository extends EntityRepository
                         ->setParameter('description', "%$findDescription%");
     }
 
+    public function findAllArray()
+    {
+        $dql = "SELECT mdo.id, mdo.descripcion, mdo.precio,
+                       tip.nombre as tipo,
+                       med.medida 
+                FROM PresupuestoBundle:ManosDeObra mdo
+                JOIN mdo.medidas med
+                JOIN mdo.tiposDeObras tip
+                ORDER BY mdo.descripcion";
+
+        return $this->getEntityManager()
+                        ->createQuery($dql)
+                        ->getArrayResult();
+    }
+
 }

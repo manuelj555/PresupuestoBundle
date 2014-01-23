@@ -4,10 +4,10 @@
 
 {% block cuerpo %}
 <div class="overflow" style="height:auto;" ng-app="presupuesto">
-    <div ng-controller="mainCtrl">
-        <div ng-controller="modalCtrl">
+    <div ng-controller="mainCtrl" ng-cloak>
+        <div {#ng-controller="modalCtrl"#}>
             <form id="form_presupuesto" ng-submit="reordenar()">
-                <table class="presupuesto table table-bordered table-striped">
+                <table class="presupuesto table table-striped">
                     <thead>
                         <tr>
                             <th colspan="6" style="border-bottom: 1px solid #DDD;">
@@ -26,8 +26,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="2">
-                                <a class="btn " ng-click="showModal()">+ Mano De Obra</a>
-                                <a class="btn" ng-click="add()">+ linea vacia</a>
+                                <a class="btn" ng-click="add()">+ Linea</a>
                                 {% if presupuesto.id is not null %}
                                 <a href="{{ path("presupuesto_export",{id : presupuesto.id}) }}" target="_blank" class="btn">Imprimir</a>
                                 {% else %}
@@ -51,7 +50,7 @@
                                 </span>
                                 <span>{{'{{desc.posicion}}'}}</span>
                             </td>
-                            <td><input type="text" ng-model="desc.descripcion" style="width: 98%" /></td>
+                            <td ng-mouseenter="showManosDeObra($event)" ng-mouseleave="hideManosDeObra()"><input type="text" ng-model="desc.descripcion" style="width: 98%" ng-change="hideOrShowManosDeObra(desc.descripcion)"/></td>
                             <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
                             <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>
                             <td style="text-align: right;padding: 5px 10px 0 0">{{ '{{subTotal(desc)|number:2}}' }} Bs</td>
@@ -62,7 +61,16 @@
                     </tbody>
                 </table>
             </form>
-            {% include 'PresupuestoBundle:ManoDeObra:all.ajax.html.twig' %}
+            {#{% include 'PresupuestoBundle:ManoDeObra:all.ajax.html.twig' %}#}
+        </div>
+        <div class="panel panel-default" id="manos_de_obra_list">
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
+                    <tr ng-repeat="m in manos_de_obra | filter:mdo_filtro">
+                        <td>{{ '{{ m.descripcion }}' }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -73,8 +81,8 @@
 <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/angular.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
 <script type="text/javascript">
-var parameters = {
-    manosDeObraUrl: '{{ path("manosdeobra_all_json") }}'
-}
+    var parameters = {
+        manosDeObra: {{ form.vars.manos_de_obra|raw }}
+    }
 </script>
 {% endblock javascripts %}

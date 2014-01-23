@@ -1,13 +1,14 @@
-var presupuesto = angular.module('presupuesto', []).config(function($routeProvider) {
+var presupuesto = angular.module('presupuesto', []);/*.config(function($routeProvider) {
     /*$routeProvider.when('/obras', {
         template: parameters.modalTemplate, 
         controller: 'modalCtrl'
     })
-    .otherwise({redirectTo: ''})*/
-})
+    .otherwise({redirectTo: ''})* /
+})*/
 
-presupuesto.controller('mainCtrl', function($scope, presupuesto) {
+presupuesto.controller('mainCtrl', function($scope, presupuesto, manos_de_obra) {
 
+    $scope.manos_de_obra = manos_de_obra
     $scope.presupuesto = presupuesto
     $scope.descripciones = presupuesto.descripciones
 
@@ -23,6 +24,35 @@ presupuesto.controller('mainCtrl', function($scope, presupuesto) {
     $scope.subir = presupuesto.subirDescripcion
 
     $scope.bajar = presupuesto.bajarDescripcion
+    
+    $scope.showManosDeObra = function($event){
+        var td = $($event.target);
+        var input = td.find('input');
+        td.append($("#manos_de_obra_list"))
+        $("#manos_de_obra_list").css({
+            left: td.offset().left,
+            width: td.outerWidth(),
+            top: td.offset().top + td.outerHeight() - 1,
+            'z-index': 100
+        }).data('active', true);
+        //$scope.hideOrShowManosDeObra(input.val());
+    };
+    
+    $scope.hideManosDeObra = function(){
+        $("#manos_de_obra_list").hide().data('active', false);
+    };
+    
+    $scope.hideOrShowManosDeObra = function(description){
+        var div = $("#manos_de_obra_list");
+//        console.log(div.data('active') , description.length);
+        if(div.data('active') && description.length > 3 ){
+            div.show();            
+        }else{
+            div.hide();
+        }
+        
+        $scope.mdo_filtro = description;
+    };
         
 })
 
@@ -114,29 +144,7 @@ presupuesto.filter('to_number', function() {
 })
 
 presupuesto.factory('manos_de_obra', function() {
-
-    var manosdeobra = {
-        items: []
-    }
-
-    var cargados = false
-
-    manosdeobra.getAll = function(){
-        if(!cargados){
-            $.ajax({
-                url: parameters.manosDeObraUrl,
-                async: false,
-            }).done(function(data) {
-                manosdeobra.items = data
-                cargados = true
-            })            
-        }
-
-        return manosdeobra.items
-    }
-
-
-    return manosdeobra
+    return parameters.manosDeObra;
 })
 
 presupuesto.controller('modalCtrl', function ($scope, presupuesto, manos_de_obra) {
@@ -147,11 +155,5 @@ presupuesto.controller('modalCtrl', function ($scope, presupuesto, manos_de_obra
             cantidad: 1,
             precio: obra.precio + ' ' + obra.medidas.medida
         })
-    }
-
-    $scope.showModal = function(){
-        $("#modal_manodeobra").modal()
-        $scope.manosdeobra = manos_de_obra.getAll()
-        console.log($scope.manosdeobra)
     }
 })

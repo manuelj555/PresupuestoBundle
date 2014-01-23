@@ -45,11 +45,11 @@ class PresupuestoManager
         return $this->em->getRepository($this->presupuestoRepository);
     }
 
-    public function getForm(Presupuestos $presupuesto)
+    public function getForm(Presupuestos $presupuesto = null)
     {
         $presupuesto || $presupuesto = new Presupuestos();
 
-        return $this->formFactory->create(new PresupuestoForm(), $presupuesto);
+        return $this->formFactory->create('presupuesto', $presupuesto);
     }
 
     public function save(Presupuestos $presupuesto)

@@ -80,7 +80,7 @@ class PresupuestoController extends Controller
 
         return array(
             'form' => $form->createView(),
-            'presupuesto' => $presupuesto,
+            'presupuesto' => $form->getData(),
         );
     }
 

@@ -5,6 +5,9 @@ namespace K2\PresupuestoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContext;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * ManosDeObra
@@ -12,6 +15,8 @@ use Symfony\Component\Validator\ExecutionContext;
  * @Assert\Callback(methods={"esPrecioFloat"})
  * @ORM\Table(name="manos_de_obra")
  * @ORM\Entity(repositoryClass="ManoDeObraRepository")
+ * 
+ * @ExclusionPolicy("all")
  */
 class ManosDeObra {
 
@@ -21,6 +26,8 @@ class ManosDeObra {
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * 
+     * @Expose
      */
     private $id;
 
@@ -29,6 +36,8 @@ class ManosDeObra {
      *
      * @ORM\Column(name="descripcion", type="string", length=300, nullable=false)
      * @Assert\NotBlank(message="La descripción no puede estar vacía")
+     * 
+     * @Expose
      */
     private $descripcion;
 
@@ -38,6 +47,8 @@ class ManosDeObra {
      * @ORM\Column(name="precio", type="float", nullable=false)
      * @Assert\NotBlank(message="El Precio no puede estar vacío")
      * @ Assert\Type(type="float", message="El precio debe ser un número")
+     * 
+     * @Expose
      */
     private $precio;
 
@@ -215,6 +226,15 @@ class ManosDeObra {
         if (!is_numeric($this->getPrecio())) {
             $context->addViolationAtPath("precio", "El precio debe ser un número válido");
         }
+    }
+    
+    /**
+     * 
+     * @VirtualProperty
+     */
+    public function getMedidaName()
+    {
+        return $this->medidas->getDescripcion();
     }
 
 }

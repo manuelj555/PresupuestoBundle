@@ -13,7 +13,7 @@
         <span>{% if form.vars.data.posicion is defined %}{{ form.vars.data.posicion }}{% endif %}</span>
         {{ form_widget(form.posicion) }}
     </td>
-    <td class="descripcion">{{ form_widget(form.descripcion, attr_description) }}</td>
+    <td class="descripcion" >{{ form_widget(form.descripcion, attr_description) }}</td>
     <td class="precio">{{ form_widget(form.precio, attr_precio_cant) }}</td>
     <td class="cantidad">{{ form_widget(form.cantidad, attr_precio_cant) }}</td>
     <td class="subtotal">{% if form.vars.data.subtotal is defined %}{{ form.vars.data.subtotal }} Bs{% endif %}</td>

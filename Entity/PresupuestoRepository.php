@@ -14,7 +14,6 @@ class PresupuestoRepository extends EntityRepository
 
     public function queryAll()
     {
-
         return $this->createQueryBuilder('p')
                         ->getQuery();
     }

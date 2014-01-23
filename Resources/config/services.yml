@@ -9,6 +9,7 @@ services:
         class: K2\PresupuestoBundle\Service\ViewSelector
         arguments: 
             - "@service_container"
+            
     k2_twig_extensions:
         class: K2\PresupuestoBundle\Twig\PresupuestoExtension
         tags:
@@ -27,3 +28,12 @@ services:
             - @doctrine.orm.entity_manager
             - @form.factory
             - 'PresupuestoBundle:Presupuestos'
+
+    presupuesto.form:
+        class: K2\PresupuestoBundle\Form\PresupuestoForm
+        tags:
+          - {name: form.type, alias: presupuesto}
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @jms_serializer
+          
