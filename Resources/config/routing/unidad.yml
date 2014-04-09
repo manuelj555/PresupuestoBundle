@@ -1,0 +1,7 @@
+unidades_by_material:
+    path: /by-material-{id}
+    defaults:
+        _controller: PresupuestoBundle:Unidad:unidadesSelect
+#    conditions: request.isXmlHttpRequest()
+    options:
+        expose: true

@@ -1,0 +1,108 @@
+{% extends "form_div_layout.html.twig" %}
+
+{% block form_row %}
+{% if compound %}
+    {{ parent() }}
+{% else %}
+{% spaceless %}
+{% set prefixe_type = form.vars.block_prefixes[1] %}
+{% if prefixe_type in ['radio', 'checkbox'] and inline|default(false) %}
+    {{ block('radio_inline') }}
+{% else %}
+    <div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+        {% if prefixe_type in ['radio', 'checkbox'] %}{#si es un radio o check#}
+            <div class="col-sm-offset-4 col-sm-10">
+                <div class="{{ prefixe_type }}">
+                    <label>
+                        {{ form_widget(form) }} {{ label }}
+                        {{form_errors(form)}}
+                    </label>
+                </div>
+            </div>
+        {% else %}{#si es cualquier otro input#}
+            {{ form_label(form, label|default,{ 'label_attr': { 'class': 'col-md-4 col-sx-12 control-label'} }) }}
+            <div class="col-md-8 col-sd-12">
+                {{ form_widget(form, { 'attr' : {class:'form-control'}|merge(attr) }) }}
+                {{form_errors(form)}}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}
+{% endspaceless %}
+{% endif %}
+{% endblock %}
+
+{% block choice_widget_collapsed %}
+{% spaceless %}
+    {#<div class="picker">#}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {% if empty_value is not none %}
+            <option value=""{% if required %} disabled="disabled"{% if value is empty %} selected="selected"{% endif %}{% endif %}>{{ empty_value|trans({}, translation_domain) }}</option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+            {% set options = preferred_choices %}
+            {{ block('choice_widget_options') }}
+            {% if choices|length > 0 and separator is not none %}
+            <option disabled="disabled">{{ separator }}</option>
+            {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </select>
+{#    </div>#}
+{% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+{% block radio_inline %}
+<label class="{{ form.vars.block_prefixes[1] }}-inline">
+    {{ form_widget(form) }} {{ label }}
+</label>
+{% endblock %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul class="list-unstyled text-danger" style="margin: 10px 0 0 10px">
+        {% for error in errors %}
+            <li>{{ error.message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_label %}
+{% spaceless %}
+    {% if label is not sameas(false) %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_label %}
+        
+{% block form_start %}
+{% spaceless %}
+    {% if attr['class'] is not defined %}
+        {% set attr = attr|merge({class: 'form-horizontal'}) %}
+    {% endif %}
+    {{ parent() }}
+{% endspaceless %}
+{% endblock form_start %}
+        
+{% block submit_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({class: 'btn btn-primary'}) %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+    <button type="submit" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+{% endspaceless %}
+{% endblock submit_widget %}

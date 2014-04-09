@@ -1,0 +1,48 @@
+{% form_theme form '@Presupuesto/Form/fields.html.twig' %}
+{% form_theme form.materiales '@Presupuesto/Form/materiales.html.twig' %}
+
+{{ form_start(form, {action: app.request.requestUri}) }}
+{{ form_errors(form) }}
+<div class="row">
+    <div class="col-xs-7"><h3>Información Básica</h3></div>
+    <div class="col-xs-5"><h3>Materiales</h3></div>
+</div>
+<div class="row">
+    <div class="col-xs-7">
+        <div class="form-group">{{ form_widget(form.descripcion) }}</div>
+        {{ form_row(form.medidas) }}           
+        {{ form_row(form.tiposDeObras) }}
+        {{ form_label(form.precio) }}
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Bs</span>
+                {{ form_widget(form.precio, {bootstrap: true}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Guardar" />
+        </div>
+    </div>
+</div>
+<div {#class="col-xs-5"#}>
+    {{ form_widget(form.materiales) }}
+    <hr/>
+    <a class="btn btn-info btn-sm add" href="#" >Add</a>
+    <p>Agregue los materiales que se usán en la realización de este trabajo.</p>
+</div>
+{{ form_end(form) }}
+{{ include('@Presupuesto/Default/collection_form.js.twig', {form: form.materiales, add: 'a.add'}) }}
+<script>
+    $('#{{form.materiales.vars.id}}').on('change', ".reload-unidad-select", function() {
+        var select = $(this);
+        select.closest('tr').find(".unidad-select").loadSelect(Routing.generate('unidades_by_material', {id: select.val()}), {}, function(json) {
+            var options = {};
+
+            _.forEach(json, function(item) {
+                options[item.id] = item.nombre;
+            });
+
+            return options;
+        });
+    });
+</script>

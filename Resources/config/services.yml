@@ -15,19 +15,29 @@ services:
         tags:
           - {name: twig.extension}
           
+    presupuesto.abstract_manager:
+        abstract: true
+        calls:
+            - [setEm, [@doctrine.orm.entity_manager]]
+            - [setFormFactory, [@form.factory]]
+          
     presupuesto.manodeobra_manager:
+        parent: presupuesto.abstract_manager 
         class: K2\PresupuestoBundle\Model\ManoDeObraManager
         arguments:
-            - @doctrine.orm.entity_manager
-            - @form.factory
-            - 'PresupuestoBundle:ManosDeObra'
+            - PresupuestoBundle:ManosDeObra
+          
+    presupuesto.material_manager:
+        parent: presupuesto.abstract_manager 
+        class: K2\PresupuestoBundle\Model\MaterialManager
+        arguments:
+            - PresupuestoBundle:Material
           
     presupuesto.manager:
+        parent: presupuesto.abstract_manager 
         class: K2\PresupuestoBundle\Model\PresupuestoManager
         arguments:
-            - @doctrine.orm.entity_manager
-            - @form.factory
-            - 'PresupuestoBundle:Presupuestos'
+            - PresupuestoBundle:Presupuestos
 
     presupuesto.form:
         class: K2\PresupuestoBundle\Form\PresupuestoForm

@@ -50,7 +50,7 @@
                                 </span>
                                 <span>{{'{{desc.posicion}}'}}</span>
                             </td>
-                            <td ng-mouseenter="showManosDeObra($event)" ng-mouseleave="hideManosDeObra()"><input type="text" ng-model="desc.descripcion" style="width: 98%" ng-change="hideOrShowManosDeObra(desc.descripcion)"/></td>
+                            <td ng-mouseenter="setActiveDescription(desc);prepareManosDeObra($event);" ng-mouseleave="hideManosDeObra()"><input type="text" ng-model="desc.descripcion" style="width: 98%" ng-change="hideOrShowManosDeObra(desc.descripcion)" ng-focus="hideOrShowManosDeObra(desc.descripcion)"/></td>
                             <td><input type="text" ng-model="desc.precio" style="width: 88%" /></td>
                             <td><input type="text" ng-model="desc.cantidad" style="width: 88%" /></td>
                             <td style="text-align: right;padding: 5px 10px 0 0">{{ '{{subTotal(desc)|number:2}}' }} Bs</td>
@@ -63,11 +63,12 @@
             </form>
             {#{% include 'PresupuestoBundle:ManoDeObra:all.ajax.html.twig' %}#}
         </div>
-        <div class="panel panel-default" id="manos_de_obra_list">
+        <div class="panel panel-default" id="manos_de_obra_list" ng-controller="ManosDeObraListCtrl">
             <div class="panel-body">
                 <table class="table table-condensed table-striped">
                     <tr ng-repeat="m in manos_de_obra | filter:mdo_filtro">
-                        <td>{{ '{{ m.descripcion }}' }}</td>
+                        <td ng-click="addManoDeObra(m)">{{ '{{ m.descripcion }}' }}</td>
+                        <td>{{ '{{ m.precio }} {{ m.medida }}' }}</td>
                     </tr>
                 </table>
             </div>

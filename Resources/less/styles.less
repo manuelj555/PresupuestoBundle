@@ -2,6 +2,9 @@
     Created on : 21/01/2014, 07:18:48 AM
     Author     : Manuel Aguirre <programador.manuel@gmail.com>
 */
+@import "variables.less";
+
+
 body{
     padding-top: 70px;
 }
@@ -12,13 +15,14 @@ body{
     margin-right: 5px;
 }
 
-table .link-imagen{
-    text-align: center !important;
-    width: 50px;
-}
-
-table .link-imagen img{
-    width: 20px;
+table{
+    .link-imagen{
+        text-align: center !important;
+        width: 50px;
+        img{
+            width: 20px;
+        }
+    }
 }
 
 form .control-group{
@@ -29,27 +33,29 @@ form .control-group{
     margin: 0px !important;
 }
 
-table.presupuesto img{
-    width: 20px;
+table.presupuesto{
+    img{
+        width: 20px;
+    }
+    td{
+        padding: 0px;
+        z-index: 0;
+        background-color: transparent !important;
+        position: relative;
+    }
+    tr{
+        &:hover td{
+            z-index: 1;
+        }
+    }
+    input{
+        margin-bottom: 0px;
+        z-index: 0;
+    }
+    tfoot td{
+        padding: 3px;
+    }
 }
-table.presupuesto td{
-    padding: 0px;
-    z-index: 0;
-    background-color: transparent !important;
-    position: relative;
-}
-table.presupuesto tr:hover td{
-    z-index: 1;
-}
-
-table.presupuesto input{
-    margin-bottom: 0px;
-    z-index: 0;
-}
-/*table.presupuesto  tbody input{
-    border-style: none;
-    background-color: transparent;    
-}*/
 
 td.subtotal{
     padding-right: 20px !important;
@@ -61,36 +67,68 @@ td.subtotal{
     width: 100%;
 }
 
-/*table.presupuesto tbody tr:hover{
-    box-shadow: 0px 0px 20px #222;
-    margin-top: -10px;
-}*/
-/*table.presupuesto tbody tr:hover td{
-    margin-top: -10px;
-    padding: 5px;
-    z-index: 10;
-    background-color: #eee !important;
-}*/
-/*table.presupuesto tbody tr:hover input{
-    border-style: solid;
-    background-color: white;
-}*/
-table.presupuesto tfoot td{
-    padding: 3px;
-}
 td.orden{
     text-align: center 
 }
-.loading{z-index: 9999;display: none}
-.loading img{position: fixed; margin-left: -56px;margin-top: -56px;top: 50%;left: 50%}
-.loading, .loading div{position: fixed;width: 100%;height: 100%;top: 0;left: 0}
-.loading div{opacity: 0.6;background-color: #000;filter: alpha(opacity = 60)}
+.loading{
+    z-index: 9999;
+    display: none;
+
+    img{
+        position: fixed; 
+        margin-left: -56px;
+        margin-top: -56px;
+        top: 50%;
+        left: 50%
+    }
+
+    &, div{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    div{
+        opacity: 0.6;
+        background-color: #000;
+        /*filter: alpha(opacity = 60);*/
+    }
+}
+
 .botones-edicion{display: none}
 .manos_de_obras_list select,
 .manos_de_obras_list textarea,
 .manos_de_obras_list input{width: 90%}
-.td-posicion > span{line-height: 30px;vertical-align: top;display: inline-block;margin-left: 10px}
-.td-posicion i{display: none}
-.td-posicion:hover i{display: block}
+.td-posicion{
+    > span{
+        line-height: 30px;
+        vertical-align: top;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    i{
+        display: none;
+    }
+    &:hover i{
+        display: block;
+    }
+} 
 
-#manos_de_obra_list{display: none;position: absolute;border-radius: 0px;border-top: none;z-index: 100;overflow: auto;max-height: 300px}
+.table-external-bordered{
+    border: 1px solid @table-border-color;    
+}
+
+#manos_de_obra_list{
+    display: none;
+    position: absolute;
+    border-radius: 0px;
+    border-top: none;
+    z-index: 100;
+    overflow: auto;
+    max-height: 300px;
+    td{
+        cursor: pointer;
+    }
+}

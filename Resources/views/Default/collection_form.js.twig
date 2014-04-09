@@ -1,0 +1,20 @@
+{#
+    variables:
+        form(FormView)
+        add(String): selector del tag para agregar
+#}
+<script>
+    $(function(){
+        var el = $('#{{ form.vars.id }}');
+        var html = el.data('prototype');
+        var index = $('.collection-item', el).size();
+        $('{{ add }}').on('click', function(event) {
+            event.preventDefault();
+            el.append(html.replace(/__name__/g, index++));
+        });
+        el.on('click', '.item-remove', function(event) {
+            event.preventDefault;
+            $(this).closest('.collection-item').remove();
+        });
+    });
+</script>

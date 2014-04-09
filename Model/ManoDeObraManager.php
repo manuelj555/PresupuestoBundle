@@ -7,47 +7,23 @@ use K2\PresupuestoBundle\Entity\ManoDeObraRepository;
 use K2\PresupuestoBundle\Entity\ManosDeObra;
 use K2\PresupuestoBundle\Form\ManoDeObraForm;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Description of ManoObraManager
  *
  * @author Manuel Aguirre <programador.manuel@gmail.com>
  */
-class ManoDeObraManager
+class ManoDeObraManager extends AbstractManager
 {
 
     /**
-     *
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     *
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-    protected $manoDeObraRepository;
-
-    function __construct(EntityManager $em, FormFactoryInterface $formFactory, $manoDeObraRepository)
-    {
-        $this->em = $em;
-        $this->formFactory = $formFactory;
-        $this->manoDeObraRepository = $manoDeObraRepository;
-    }
-
-        public function getForm(ManosDeObra $m)
-    {
-        return $this->formFactory->create(new ManoDeObraForm(), $m);
-    }
-
-    /**
-     * 
+     * @deprecated usar getRepository directamente
      * @return ManoDeObraRepository
      */
     public function getManoDeObraRepository()
     {
-        return $this->em->getRepository($this->manoDeObraRepository);
+        return $this->getRepository();
     }
 
     public function getAllManosDeObra()
@@ -55,6 +31,23 @@ class ManoDeObraManager
         return $this->getManoDeObraRepository()
                         ->queryAllManosDeObra()
                         ->getArrayResult();
+    }
+
+    public function persist(ManosDeObra $manoDeObra)
+    {
+        $this->em->persist($manoDeObra);
+
+        foreach ($manoDeObra->getMateriales() as $material) {
+//            $material->setManoDeObra($manoDeObra);
+            $this->em->persist($material);
+        }
+
+        $this->em->flush();
+    }
+
+    protected function getFormType()
+    {
+        return new ManoDeObraForm();
     }
 
 }

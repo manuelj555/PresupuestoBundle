@@ -4,12 +4,12 @@ $.fn.serializeObject = function() {
             json = {},
             push_counters = {},
             patterns = {
-    "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
-            "key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
-            "push":     /^$/,
-            "fixed":    /^\d+$/,
-            "named":    /^[a-zA-Z0-9_]+$/
-    };
+                "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+                "key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+                "push": /^$/,
+                "fixed": /^\d+$/,
+                "named": /^[a-zA-Z0-9_]+$/
+            };
 
 
     this.build = function(base, key, value) {
@@ -77,7 +77,7 @@ JSON.stringify = JSON.stringify || function(obj) {
         var n, v, json = [], arr = (obj && obj.constructor == Array);
         for (n in obj) {
             v = obj[n];
-            t = typeof(v);
+            t = typeof (v);
             if (t == "string")
                 v = '"' + v + '"';
             else if (t == "object" && v !== null)
@@ -165,3 +165,28 @@ $(document).ajaxStart(function() {
 }).ajaxComplete(function() {
     $(".loading").hide(0)
 })
+
+/**
+ * 
+ * @param {type} url
+ * @param {type} params
+ * @param {type} before
+ * @returns {$.fn@call;each}
+ */
+$.fn.loadSelect = function(url, params, before) {
+
+    return this.each(function() {
+        var select = $(this).html('');
+        var option = _.template('<option value="<%= value %>"><%= label %></option>');
+        
+        $.getJSON(url, params, function(json){
+            if(_.isFunction(before)){
+                json = before(json);
+            }
+            _.forEach(json, function(label, value){
+                select.append(option({label: label, value: value}));
+            });
+        });
+    });
+    
+};

@@ -5,21 +5,26 @@
         <title>.::Sistema de Presupuestos de Trabajo::.</title>
         {% block stylesheets %}
             {#
-            '@PresupuestoBundle/Resources/less/bootstrap.less'
             'bundles/presupuesto/css/bootstrap-responsive.min.css' 
+            'bundles/presupuesto/css/bootstrap.min.css' 
+            filter='cssrewrite'
  #}
         {% stylesheets 
-            'bundles/presupuesto/css/bootstrap.min.css' 
+            '@PresupuestoBundle/Resources/less/bootstrap.less'
             'bundles/presupuesto/css/jqueryui/jquery.ui.all.css' 
             'bundles/presupuesto/css/jgrowl/jgrowl.css' 
             'bundles/presupuesto/css/validationEngine.jquery.css' 
             '@PresupuestoBundle/Resources/less/styles.less' 
-            filter='cssrewrite' 
+            output = 'css/styles.css'
         %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
         {% endblock %}
         {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
+        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/jquery/jquery-1.7.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/lodash.min.js') }}"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -46,7 +51,6 @@
         {% include 'PresupuestoBundle::modal.html.twig' %}
         {% block javascripts %}
         {% javascripts 
-            'bundles/presupuesto/js/jquery/jquery-1.7.min.js' 
             'bundles/presupuesto/js/jquery/jquery-ui.custom.js'
             'bundles/presupuesto/js/backbone/underscore-min.js'
             'bundles/presupuesto/js/bootstrap.min.js'

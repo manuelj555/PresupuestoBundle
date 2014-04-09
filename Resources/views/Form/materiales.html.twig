@@ -1,0 +1,28 @@
+{% block collection_widget %}
+    <table class="table table-condensed table-external-bordered" >
+        <tbody id="{{ id }}" data-prototype="{{ form_row(prototype)|e }}">
+            {{ block('form_rows') }}
+            {{ form_rest(form) }}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block manodeobra_material_row %}
+    <tr class="collection-item">
+        {{ form_row(form.material, { width: 4, attr: { class: 'form-control input-sm reload-unidad-select' } }) }}
+        {{ form_row(form.cantidad, { width: 2, attr : { placeholder : 'Cantidad', } }) }}
+        {{ form_row(form.defaultUnidad, { width: 4, attr : { placeholder : 'Cantidad', class: 'form-control input-sm unidad-select' } }) }}
+        <td class="col-xs-2 text-center">
+            <a href="#" class="item-remove">
+                <span class="glyphicon glyphicon-remove" style="vertical-align: middle"></span>                
+            </a>
+        </td>
+    </tr>
+    {{form_errors(form)}}
+{% endblock %}
+
+{% block form_row %}
+    <td class="col-xs-{{ width }}">
+        {{ form_widget(form, { 'attr' : {class:'form-control input-sm'}|merge(attr) }) }} 
+    </td>
+{% endblock %}

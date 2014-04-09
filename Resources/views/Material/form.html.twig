@@ -1,0 +1,24 @@
+{% form_theme form '@Presupuesto/Form/horizontal_fields.html.twig' %}
+{% form_theme form.unidades '@Presupuesto/Form/unidades.html.twig' %}
+
+{{ form_start(form, {attr:{class:""}}) }}
+<div class="row">
+    <div class="col-sm-7">
+        <h3>Datos Básicos</h3>
+        <div class="form-horizontal">
+            {{ form_row(form.nombre) }}
+            {{ form_row(form.precio) }}
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <h3>Unidades Soportadas</h3>
+        <div class="row">
+            {{ form_widget(form.unidades, {attr:{class:'list-group'}}) }}
+        </div>
+        <a class="btn btn-info btn-sm item-add" href="#" >Add</a>
+        <p>Agregue los materiales que se usán en la realización de este trabajo.</p>
+    </div>
+</div>
+<input type="submit" class="btn" value="Guardar" />
+{{ form_end(form) }}
+{{ include('@Presupuesto/Default/collection_form.js.twig', {form: form.unidades, add: '.item-add'}) }}

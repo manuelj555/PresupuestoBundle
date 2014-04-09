@@ -3,10 +3,10 @@
 namespace K2\PresupuestoBundle\Controller;
 
 use K2\PresupuestoBundle\Entity\ManosDeObra;
-use K2\PresupuestoBundle\Form\ManoDeObraForm;
 use K2\PresupuestoBundle\Model\ManoDeObraManager;
-use K2\PresupuestoBundle\Response\ErrorResponse;
 use K2\PresupuestoBundle\Response\SuccessResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 class ManoDeObraController extends Controller
 {
 
-    public function listadoAction(Request $request, $page, $description)
+    /**
+     * 
+     * @Template()
+     */
+    public function listadoAction(Request $request, $page = 1, $description = null)
     {
         $manager = $this->getManager();
 
@@ -24,8 +28,8 @@ class ManoDeObraController extends Controller
                                     , array('description' => $description)));
         }
 
-        $query = $manager->getManoDeObraRepository()
-                ->queryAllManosDeObra();
+        $query = $manager->getRepository()
+                ->queryAllManosDeObra($description);
 
         $registros = $this->get("knp_paginator")->paginate($query, $page);
 
@@ -35,57 +39,55 @@ class ManoDeObraController extends Controller
 
         $form = $manager->getForm(new ManosDeObra());
 
-        return $this->render("PresupuestoBundle:ManoDeObra:listado.html.twig"
-                        , array(
-                    'manosdeobra' => $registros,
-                    'description' => $description,
-                    'form' => $form->createView(),
-        ));
+        return array(
+            'manosdeobra' => $registros,
+            'description' => $description,
+            'form' => $form->createView(),
+        );
     }
 
-    public function agregarAction(Request $request)
+    /**
+     * @Template()
+     */
+    public function agregarAction(Request $request, ManosDeObra $manoDeObra = null)
     {
         $manager = $this->getManager();
-        $manoDeObra = new ManosDeObra();
+
+        if (!$manoDeObra) {
+            $manoDeObra = new ManosDeObra();
+        }
 
         $form = $manager->getForm($manoDeObra);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('POST')) {
-            $data = json_decode($request->getContent(), true);
-            $form->bind($data[$form->getName()]);
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($manoDeObra);
-                $em->flush();
-                return new SuccessResponse("La Mano de Obra se Guardó con exito");
-            } else {
-                return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
-            }
+        if ($form->isValid()) {
+            $manager->persist($manoDeObra);
+
+            $this->get('session')->getFlashBag()
+                    ->add('success', "La Mano de Obra se Guardó con exito");
+
+            return $this->redirect($this->generateUrl('manosdeobra_listado'));
         }
 
-        return $this->agregarResponse($form);
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('@Presupuesto/ManoDeObra/form_ajax.html.twig', array(
+                        'form' => $form->createView(),
+            ));
+        }
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
-    public function editarAction($id)
+    /**
+     * 
+     * @ParamConverter("manoDeObra", class="PresupuestoBundle:ManosDeObra")
+     * @Template()
+     */
+    public function editarAction(Request $request, ManosDeObra $manoDeObra)
     {
-        $manoDeObra = $this->getEntity($id);
-
-        $form = $this->createForm(new ManoDeObraForm(), $manoDeObra);
-
-        if ($this->getRequest()->isMethod('POST')) {
-            $data = json_decode($this->getRequest()->getContent(), true);
-            $form->bind($data[$form->getName()]);
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($manoDeObra);
-                $em->flush();
-                return new SuccessResponse("La Mano de Obra se Guardó con exito", 'EditManoDeObraSuccess');
-            } else {
-                return new ErrorResponse($form->getErrors(), ErrorResponse::ALERT_FORM);
-            }
-        }
-
-        return $this->agregarResponse($form);
+        return $this->agregarAction($request, $manoDeObra);
     }
 
     public function agregarResponse($form)

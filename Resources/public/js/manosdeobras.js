@@ -19,8 +19,6 @@ function terminarEdicion() {
 $(".manos_de_obras_list tbody tr").on('click', '.link-editar', function(event) {
     event.preventDefault()
 
-    terminarEdicion()
-    
     $("form.validationEngineContainer").attr("action", $(this).attr('href'))
 
     var tr = $(this).closest("tr").addClass('editando');

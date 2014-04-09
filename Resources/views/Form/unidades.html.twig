@@ -1,0 +1,29 @@
+{% block collection_widget %}
+    <table class="table table-condensed table-external-bordered" >
+        <tbody id="{{ id }}" data-prototype="{{ form_row(prototype)|e }}">
+            {{ block('form_rows') }}
+            {{ form_rest(form) }}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block material_unidad_row %}
+    <tr class="collection-item">
+        {{ form_row(form.unidad, { attr : { placeholder : 'Unidad', }, width: 5 }) }}
+        {{ form_row(form.factor, { attr : { placeholder : 'Cantidad', }, width: 4 }) }}
+        {{ form_row(form.isBase, { attr : { placeholder : 'Cantidad', }, width: 1 }) }}
+        <td class="col-xs-1">
+            <a href="#" class="item-add"><span class="glyphicon glyphicon glyphicon-plus" style="vertical-align: middle"></span></a>
+        </td>
+        <td class="col-xs-1">
+            <a href="#" class="item-remove"><span class="glyphicon glyphicon-remove" style="vertical-align: middle"></span></a>
+        </td>
+    </tr>
+{% endblock %}
+
+{% block form_row %}
+    {#    <div class="col-xs-{{ width }}">#}
+    <td class="col-xs-{{ width }}">
+        {{ form_widget(form, { 'attr' : {class:'form-control input-sm', style: 'width: 100%'}|merge(attr) }) }} 
+    </td>
+{% endblock %}

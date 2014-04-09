@@ -13,51 +13,34 @@ use Symfony\Component\Form\FormFactoryInterface;
  *
  * @author Manuel Aguirre <programador.manuel@gmail.com>
  */
-class PresupuestoManager
+class PresupuestoManager extends AbstractManager
 {
 
-    /**
-     *
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     *
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-    protected $presupuestoRepository;
-
-    function __construct(EntityManager $em, FormFactoryInterface $formFactory, $presupuestoRepository)
+    public function getForm($object = null)
     {
-        $this->em = $em;
-        $this->formFactory = $formFactory;
-        $this->presupuestoRepository = $presupuestoRepository;
-    }
-
-    /**
-     * 
-     * @return PresupuestoRepository
-     */
-    public function getRepository()
-    {
-        return $this->em->getRepository($this->presupuestoRepository);
-    }
-
-    public function getForm(Presupuestos $presupuesto = null)
-    {
-        $presupuesto || $presupuesto = new Presupuestos();
-
-        return $this->formFactory->create('presupuesto', $presupuesto);
+        $object || $object = new Presupuestos();
+        return parent::getForm($object);
     }
 
     public function save(Presupuestos $presupuesto)
     {
-        $descripcionesOriginales = $presupuesto->getDescripciones()->toArray();
+        $total = 0;
 
-        $presupuesto->guardar($this->em, $descripcionesOriginales);
+        foreach ($presupuesto->getDescripciones() as $des) {
+            $des->calculateSubtotal();
+            $total += $des->getSubtotal();
+            $this->em->persist($des);
+        }
+
+        $presupuesto->setTotal($total);
+        $this->em->persist($presupuesto);
+
         $this->em->flush();
+    }
+
+    protected function getFormType()
+    {
+        return 'presupuesto';
     }
 
 }

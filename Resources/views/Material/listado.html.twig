@@ -1,0 +1,48 @@
+{% extends "PresupuestoBundle::base.html.twig" %}
+
+{% block titulo %}
+Materiales del Sistema
+<a class="pull-right btn-primary btn" href="{{ path('materiales_crear') }}">Agregar</a>
+{% endblock %}
+
+{% block cuerpo %}
+<div id="resultado"></div>
+<table class="table table-striped table-hover manos_de_obras_list">
+    <thead>
+        <tr>
+            <th {#style="width: 40%"#}>ID</th>
+            <th>Descripción</th>
+            <th>Identificador</th>
+            <th>Precio</th>
+            {#<th>Creada</th>
+            <th>Actualizada</th>#}
+            <th style="width: 50px">Editar</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in materiales %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.identificador }}</td>
+            <td>{{ item.precio|number_format(2) }} Bs</td>
+            <td class="link-imagen">
+                <a href="{{ path("materiales_editar",{id:item.id}) }}" class="link-editar" data-res="#contenido-ajax"><img src="{{ asset("bundles/presupuesto/img/figuras/editar.png") }}" /></a>
+            </td>
+            <td class="link-imagen">
+                <a href="#"><img src="{{ asset("bundles/presupuesto/img/figuras/eliminar.png") }}" /></a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="100">
+                No exisen Materiales
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</form>
+{#{{ knp_pagination_render(materiales) }}#}
+{% endblock cuerpo %}

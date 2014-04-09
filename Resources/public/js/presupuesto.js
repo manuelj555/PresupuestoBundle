@@ -25,7 +25,13 @@ presupuesto.controller('mainCtrl', function($scope, presupuesto, manos_de_obra) 
 
     $scope.bajar = presupuesto.bajarDescripcion
     
-    $scope.showManosDeObra = function($event){
+    $scope.activeDescription = null
+    
+    $scope.setActiveDescription = function(desc){
+        $scope.activeDescription = desc;
+    };
+    
+    $scope.prepareManosDeObra = function($event){
         var td = $($event.target);
         var input = td.find('input');
         td.append($("#manos_de_obra_list"))
@@ -34,18 +40,16 @@ presupuesto.controller('mainCtrl', function($scope, presupuesto, manos_de_obra) 
             width: td.outerWidth(),
             top: td.offset().top + td.outerHeight() - 1,
             'z-index': 100
-        }).data('active', true);
-        //$scope.hideOrShowManosDeObra(input.val());
+        });
     };
     
     $scope.hideManosDeObra = function(){
-        $("#manos_de_obra_list").hide().data('active', false);
+        $("#manos_de_obra_list").hide();
     };
     
     $scope.hideOrShowManosDeObra = function(description){
         var div = $("#manos_de_obra_list");
-//        console.log(div.data('active') , description.length);
-        if(div.data('active') && description.length > 3 ){
+        if(description.length > 3 ){
             div.show();            
         }else{
             div.hide();
@@ -147,13 +151,13 @@ presupuesto.factory('manos_de_obra', function() {
     return parameters.manosDeObra;
 })
 
-presupuesto.controller('modalCtrl', function ($scope, presupuesto, manos_de_obra) {
+presupuesto.controller('ManosDeObraListCtrl', function ($scope, presupuesto, manos_de_obra) {
     
-    $scope.addObra = function(obra){
-        presupuesto.addDescripcion({
-            descripcion: obra.descripcion,
-            cantidad: 1,
-            precio: obra.precio + ' ' + obra.medidas.medida
-        })
-    }
+    $scope.addManoDeObra = function(obra){
+        $scope.activeDescription.descripcion = obra.descripcion;
+        $scope.activeDescription.cantidad = 1;
+        $scope.activeDescription.precio = obra.precio + ' ' + obra.medida;
+        $scope.hideManosDeObra();
+    };
+    
 })

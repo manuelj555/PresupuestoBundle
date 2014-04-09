@@ -85,9 +85,17 @@ class ManosDeObra {
      * })
      */
     private $medidas;
+    
+    /**
+     *
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="ManoDeObraMaterial", mappedBy="manoDeObra", orphanRemoval=true)
+     */
+    private $materiales;
 
     function __construct() {
         $this->fechaAt = $this->fechaIn = new \DateTime('now');
+        $this->materiales = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -237,4 +245,41 @@ class ManosDeObra {
         return $this->medidas->getDescripcion();
     }
 
+
+    /**
+     * Add materiales
+     *
+     * @param \K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales
+     * @return ManosDeObra
+     */
+    public function addMateriale(\K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales)
+    {
+        $this->materiales[] = $materiales;
+        
+        $materiales->setManoDeObra($this);
+    
+        return $this;
+    }
+
+    /**
+     * Remove materiales
+     *
+     * @param \K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales
+     */
+    public function removeMateriale(\K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales)
+    {
+        $this->materiales->removeElement($materiales);
+        
+        $materiales->setManoDeObra(null);
+    }
+
+    /**
+     * Get materiales
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMateriales()
+    {
+        return $this->materiales;
+    }
 }

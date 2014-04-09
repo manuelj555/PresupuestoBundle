@@ -57,7 +57,7 @@ class Presupuestos
      *
      * @var
      * @ignoreAnnotation("ORM")
-     * @ORM\OneToMany(targetEntity="DescripcionPresupuestos", mappedBy="presupuesto", cascade={"persist", "remove"}) 
+     * @ORM\OneToMany(targetEntity="DescripcionPresupuestos", mappedBy="presupuesto", cascade={"persist", "remove"}, orphanRemoval=true) 
      * @ORM\OrderBy({"posicion":"ASC"})
      */
     private $descripciones;
@@ -186,29 +186,30 @@ class Presupuestos
         }
     }
 
-    public function guardar(EntityManager $em, $descripcionesOriginales)
+    /**
+     * Add descripciones
+     *
+     * @param \K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones
+     * @return Presupuestos
+     */
+    public function addDescripcione(\K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones)
     {
-        $total = 0;
-
-        foreach ($this->getDescripciones() as $des) {
-            $des->calculateSubtotal();
-            $total += $des->getSubtotal();
-            foreach ($descripcionesOriginales as $key => $actual) {
-                if ($actual->getId() === $des->getId()) {
-                    //si la descripcion que viene del form está ya está persistida,
-                    //la quito de las que se eliminarán de la bd
-                    unset($descripcionesOriginales[$key]);
-                }
-            }
-        }
-
-        //eliminamos las originales que no se enviaron en el form
-        foreach ($descripcionesOriginales as $des) {
-            $des->setPresupuesto(null);
-        }
-
-        $this->setTotal($total);
-        $em->persist($this);
+        $this->descripciones[] = $descripciones;
+        
+        $descripciones->setPresupuesto($this);
+    
+        return $this;
     }
 
+    /**
+     * Remove descripciones
+     *
+     * @param \K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones
+     */
+    public function removeDescripcione(\K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones)
+    {
+        $this->descripciones->removeElement($descripciones);
+        
+        $descripciones->setPresupuesto(null);
+    }
 }

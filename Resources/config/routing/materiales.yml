@@ -1,0 +1,14 @@
+materiales_listado:
+    path: /
+    defaults:
+        _controller: PresupuestoBundle:Material:listado
+        
+materiales_crear:
+    path: /agregar
+    defaults:
+        _controller: PresupuestoBundle:Material:crear
+        
+materiales_editar:
+    path: /editar/{id}
+    defaults:
+        _controller: PresupuestoBundle:Material:editar

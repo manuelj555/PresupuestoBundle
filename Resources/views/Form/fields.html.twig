@@ -1,10 +1,65 @@
-{% block field_row %}
-<div class="control-group {% if errors|length > 0 %}error{% endif %}">
+{% extends "form_div_layout.html.twig" %}
+
+{% block form_row %}
+{% if compound %}
+    {{ parent() }}
+{% else %}
 {% spaceless %}
-    {{ form_label(form, label|default(null), { 'label_attr': { 'class': 'control-label'} }) }}
-    <div class="controls">
-        {{ form_widget(form, { 'attr' : attr|default({}) }) }}
-    </div>
+<div class="form-group{% if errors|length > 0 %} has-error{% endif %}">
+    {{ form_label(form) }}
+    {{ form_widget(form, { 'attr' : {class:'form-control'}|merge(attr) }) }}
+    {{form_errors(form)}}
 </div>
 {% endspaceless %}
-{% endblock field_row %}
+{% endif %}
+{% endblock %}
+
+{% block form_widget %}
+    {% if bootstrap is defined %}{% set attr = attr|merge({class: 'form-control'}) %}{% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block radio_inline %}
+<label class="{{ form.vars.block_prefixes[1] }}-inline">
+    {{ form_widget(form) }} {{ label }}
+</label>
+{% endblock %}
+
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul class="list-unstyled text-danger" style="margin: 10px 0 0 10px">
+        {% for error in errors %}
+            <li>{{ error.message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
+{% block form_label %}
+{% spaceless %}
+    {% if label is not sameas(false) %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_label %}
+        
+{% block submit_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({class: 'btn btn-primary'}) %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+    <button type="submit" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+{% endspaceless %}
+{% endblock submit_widget %}
