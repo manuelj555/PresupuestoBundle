@@ -20,6 +20,13 @@ manosdeobra_editar:
 manosdeobra_all_modal:
     pattern:  /todas
     defaults: { _controller: PresupuestoBundle:ManoDeObra:getAll }
+    
 manosdeobra_all_json:
     pattern:  /json
     defaults: { _controller: PresupuestoBundle:ManoDeObra:json }
+    
+manosdeobra_get_materiales:
+    pattern:  /materiales/{id}
+    defaults: { _controller: PresupuestoBundle:ManoDeObra:getMateriales }
+    options:
+        expose: true

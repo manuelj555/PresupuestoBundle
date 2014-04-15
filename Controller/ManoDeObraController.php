@@ -119,6 +119,23 @@ class ManoDeObraController extends Controller
         return new JsonResponse($result);
     }
 
+    public function getMaterialesAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $result = $em->getRepository('PresupuestoBundle:ManoDeObraMaterial')
+                ->createQueryBuilder('mm')
+                ->select('mm, material')
+                ->join('mm.material', 'material')
+                ->where('mm.manoDeObra = :mdo')
+                ->setParameter('mdo', $id)
+                ->getQuery()
+                ->getArrayResult()
+                ;
+
+        return new JsonResponse($result);
+    }
+
     /**
      * 
      * @return ManoDeObraManager
