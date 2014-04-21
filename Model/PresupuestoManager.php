@@ -25,7 +25,6 @@ class PresupuestoManager extends AbstractManager
     public function save(Presupuestos $presupuesto)
     {
         $total = 0;
-
         foreach ($presupuesto->getDescripciones() as $des) {
             $des->calculateSubtotal();
             $total += $des->getSubtotal();

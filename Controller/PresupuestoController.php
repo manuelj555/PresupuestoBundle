@@ -7,12 +7,11 @@ use K2\PresupuestoBundle\Entity\Presupuestos;
 use K2\PresupuestoBundle\Model\PresupuestoManager;
 use K2\PresupuestoBundle\Report;
 use K2\PresupuestoBundle\Response\ErrorResponse;
-use K2\PresupuestoBundle\Response\RedirectResponse;
-use K2\PresupuestoBundle\Response\SuccessResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PresupuestoController extends Controller
@@ -53,35 +52,38 @@ class PresupuestoController extends Controller
      */
     public function edicionAction(Request $request, Presupuestos $presupuesto = null)
     {
-        $isNew = $presupuesto === null;
-        $manager = $this->getManager();
-        $form = $manager->getForm($presupuesto);
-
-        if ($this->getRequest()->isMethod('POST')) {
-
-            $data = json_decode($request->getContent(), true);
-            $form->bind($data[$form->getName()]);
-
-            if ($form->isValid()) {
-                $manager->save($presupuesto);
-                if ($isNew) {
-                    //si es nuevo redireccionamos a editar
-                    return new RedirectResponse($this
-                                    ->generateUrl("presupuesto_edicion", array(
-                                        'id' => $presupuesto->getId(),
-                    )));
-                } else {
-                    return new SuccessResponse("Presupuesto Guardado");
-                }
-            } else {
-                return new ErrorResponse($form->getErrors());
-            }
-        }
-
+        $form = $this->getManager()->getForm($presupuesto);
+        
+        $serializer = $this->get('jms_serializer');
+        
+//        var_dump($serializer->serialize($form->getData(), 'json'));die;
         return array(
             'form' => $form->createView(),
             'presupuesto' => $form->getData(),
         );
+    }
+
+    /**
+     * @ParamConverter("presupuesto", class="PresupuestoBundle:Presupuestos")
+     * @Template("PresupuestoBundle:Presupuesto:presupuesto.html.twig")
+     */
+    public function saveAction(Request $request, Presupuestos $presupuesto = null)
+    {
+        $isNew = $presupuesto === null;
+        $manager = $this->getManager();
+        $form = $manager->getForm($presupuesto);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $presupuesto = $form->getData();
+            $manager->save($presupuesto);
+
+            return new Response($presupuesto->getId());
+        } else {
+            return new ErrorResponse($form->getErrors());
+        }
     }
 
     /**

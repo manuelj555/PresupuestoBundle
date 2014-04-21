@@ -46,10 +46,11 @@ class PresupuestoForm extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'by_reference' => false,
+//                    'prototype_name' => '{{$index}}',
         ));
 
-        $builder->addEventListener(FormEvents::PRE_BIND
-                , array(new PresupuestoListener(), 'onPreBind'));
+//        $builder->addEventListener(FormEvents::PRE_BIND
+//                , array(new PresupuestoListener(), 'onPreBind'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

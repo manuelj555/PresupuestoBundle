@@ -5,10 +5,14 @@ namespace K2\PresupuestoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use K2\PresupuestoBundle\Entity\DescripcionPresupuestos;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * Presupuestos
+ * 
+ * @ExclusionPolicy("all")
  *
  * @ORM\Table(name="presupuestos")
  * @ORM\Entity(repositoryClass="PresupuestoRepository")
@@ -22,6 +26,7 @@ class Presupuestos
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Expose
      */
     private $id;
 
@@ -29,6 +34,7 @@ class Presupuestos
      * @var string
      *
      * @ORM\Column(name="titulo", type="string", length=100, nullable=true)
+     * @Expose
      */
     private $titulo;
 
@@ -36,6 +42,7 @@ class Presupuestos
      * @var float
      *
      * @ORM\Column(name="total", type="float", nullable=true)
+     * @Expose
      */
     private $total;
 
@@ -59,6 +66,8 @@ class Presupuestos
      * @ignoreAnnotation("ORM")
      * @ORM\OneToMany(targetEntity="DescripcionPresupuestos", mappedBy="presupuesto", cascade={"persist", "remove"}, orphanRemoval=true) 
      * @ORM\OrderBy({"posicion":"ASC"})
+     * 
+     * @Expose
      */
     private $descripciones;
 

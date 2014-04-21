@@ -125,8 +125,10 @@ class ManoDeObraController extends Controller
         
         $result = $em->getRepository('PresupuestoBundle:ManoDeObraMaterial')
                 ->createQueryBuilder('mm')
-                ->select('mm, material')
+                ->select('mm, material, defaultUnidad, unidad')
                 ->join('mm.material', 'material')
+                ->join('mm.defaultUnidad', 'defaultUnidad')
+                ->join('defaultUnidad.unidad', 'unidad')
                 ->where('mm.manoDeObra = :mdo')
                 ->setParameter('mdo', $id)
                 ->getQuery()

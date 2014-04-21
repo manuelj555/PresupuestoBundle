@@ -11,6 +11,19 @@ presupuesto_edicion:
         id: null
     requirements:
         id: \d+
+        _method: GET
+        
+presupuesto_guardar:
+    pattern:  /presupuesto/{id}
+    defaults: 
+        _controller: PresupuestoBundle:Presupuesto:save
+        id: null
+#    condition: request.isXmlHttpRequest()
+    requirements:
+        id: \d+
+        _method: POST|PUT
+    options:
+        expose: true
         
 presupuesto_export:
     pattern:  /presupuesto/{id}.xls
