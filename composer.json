@@ -5,7 +5,7 @@
         "php": ">=5.3.3",
         "knplabs/knp-paginator-bundle": "~2.4",
         "CodePlex/PHPExcel": "*",
-        "leafo/lessphp": "dev-master",
+        "leafo/lessphp": "~0.3.9",
         "friendsofsymfony/jsrouting-bundle": "@stable"
     },
     "scripts": {
