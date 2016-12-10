@@ -5,12 +5,12 @@ namespace K2\PresupuestoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TiposDeObras
+ * TipoDeObra
  *
- * @ORM\Table(name="tipos_de_obras")
+ * @ORM\Table(name="tipo_de_obra")
  * @ORM\Entity
  */
-class TiposDeObras
+class TipoDeObra
 {
     /**
      * @var integer
@@ -36,22 +36,6 @@ class TiposDeObras
     private $descripcion;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_at", type="date", nullable=true)
-     */
-    private $fechaAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_in", type="date", nullable=true)
-     */
-    private $fechaIn;
-
-
-
-    /**
      * Get id
      *
      * @return integer 
@@ -65,7 +49,7 @@ class TiposDeObras
      * Set nombre
      *
      * @param string $nombre
-     * @return TiposDeObras
+     * @return TipoDeObra
      */
     public function setNombre($nombre)
     {
@@ -88,7 +72,7 @@ class TiposDeObras
      * Set descripcion
      *
      * @param string $descripcion
-     * @return TiposDeObras
+     * @return TipoDeObra
      */
     public function setDescripcion($descripcion)
     {
@@ -111,7 +95,7 @@ class TiposDeObras
      * Set fechaAt
      *
      * @param \DateTime $fechaAt
-     * @return TiposDeObras
+     * @return TipoDeObra
      */
     public function setFechaAt($fechaAt)
     {
@@ -134,7 +118,7 @@ class TiposDeObras
      * Set fechaIn
      *
      * @param \DateTime $fechaIn
-     * @return TiposDeObras
+     * @return TipoDeObra
      */
     public function setFechaIn($fechaIn)
     {

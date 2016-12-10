@@ -1,66 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>.::Sistema de Presupuestos de Trabajo::.</title>
-        {% block stylesheets %}
-            {#
-            'bundles/presupuesto/css/bootstrap-responsive.min.css' 
-            'bundles/presupuesto/css/bootstrap.min.css' 
-            filter='cssrewrite'
- #}
-        {% stylesheets 
-            '@PresupuestoBundle/Resources/less/bootstrap.less'
-            'bundles/presupuesto/css/jqueryui/jquery.ui.all.css' 
-            'bundles/presupuesto/css/jgrowl/jgrowl.css' 
-            'bundles/presupuesto/css/validationEngine.jquery.css' 
-            '@PresupuestoBundle/Resources/less/styles.less' 
-            output = 'css/styles.css'
-        %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
-        {% endblock %}
-        {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
-        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/jquery/jquery-1.7.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/lodash.min.js') }}"></script>
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    </head>
-    <body>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">                
-                <div class="navbar-header">
-                    <a href="{{ path("presupuesto_listado") }}" class="navbar-brand">Control de Presupuestos</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                {% include 'PresupuestoBundle::menu.html.twig' %}
-                </div>
-            </div>
-        </nav>
+<head>
+    <meta charset="UTF-8"/>
+    <title>.::Sistema de Presupuesto de Trabajo::.</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/presupuesto/css/styles.css') }}"/>
+    {% endblock %}
+</head>
+<body>
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
         <div class="container">
-            <div class="page-header">
-                <h1>{% block titulo "" %}</h1>
-            </div>
-            {% block cuerpo "" %}
-            <hr/>
-            <footer>
-            </footer>
+            {#<a class="brand" href="{{ path("presupuesto_listado") }}">Control de Presupuesto</a>#}
+            {#{% include 'PresupuestoBundle::menu.html.twig' %}#}
         </div>
-        <div id="contenido-ajax"></div>
-        <div class="loading"><img src="{{ asset("bundles/presupuesto/img/figuras/cargando.gif") }}" /><div></div></div>
-        {% include 'PresupuestoBundle::modal.html.twig' %}
-        {% block javascripts %}
-        {% javascripts 
-            'bundles/presupuesto/js/jquery/jquery-ui.custom.js'
-            'bundles/presupuesto/js/backbone/underscore-min.js'
-            'bundles/presupuesto/js/bootstrap.min.js'
-            'bundles/presupuesto/js/jgrowl/jgrowl.js'
-            'bundles/presupuesto/js/validation/jquery.validationEngine-es.js'
-            'bundles/presupuesto/js/validation/jquery.validationEngine.js'
-            'bundles/presupuesto/js/main.js'
-            %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        {% endblock %}
-    </body>
+    </div>
+</div>
+<div class="container">
+    <div class="hero-unit1">
+        <h2 style="text-align: center">{% block titulo "" %}</h2>
+        {% block cuerpo "" %}
+    </div>
+    <hr/>
+    <footer>
+    </footer>
+</div>
+<div id="contenido-ajax"></div>
+<div class="loading"><img src="{{ asset("bundles/presupuesto/img/figuras/cargando.gif") }}"/>
+    <div></div>
+</div>
+{% include 'PresupuestoBundle::modal.html.twig' %}
+<script type="text/javascript">var PUBLIC_PATH = "<?php echo PUBLIC_PATH ?>";</script>
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/presupuesto/js/presupuesto.js') }}"></script>
+{% endblock %}
+</body>
 </html>

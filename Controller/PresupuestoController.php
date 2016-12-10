@@ -3,11 +3,13 @@
 namespace K2\PresupuestoBundle\Controller;
 
 use Closure;
+use K2\PresupuestoBundle\Entity\Presupuesto;
 use K2\PresupuestoBundle\Entity\Presupuestos;
 use K2\PresupuestoBundle\Model\PresupuestoManager;
 use K2\PresupuestoBundle\Report;
 use K2\PresupuestoBundle\Response\ErrorResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,20 +49,29 @@ class PresupuestoController extends Controller
     }
 
     /**
-     * @ParamConverter("presupuesto", class="PresupuestoBundle:Presupuestos")
-     * @Template("PresupuestoBundle:Presupuesto:presupuesto.html.twig")
+     * @Route("/new/", name="presupuesto_crear")
      */
-    public function edicionAction(Request $request, Presupuestos $presupuesto = null)
+    public function newAction()
     {
-        $form = $this->getManager()->getForm($presupuesto);
-        
-        $serializer = $this->get('jms_serializer');
-        
-//        var_dump($serializer->serialize($form->getData(), 'json'));die;
-        return array(
-            'form' => $form->createView(),
-            'presupuesto' => $form->getData(),
-        );
+        $presupuesto = new Presupuesto();
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($presupuesto);
+        $em->flush();
+
+        return $this->redirectToRoute('presupuesto_editar', [
+            'id' => $presupuesto->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}/", name="presupuesto_editar")
+     */
+    public function edicionAction(Presupuesto $presupuesto)
+    {
+        return $this->render('@Presupuesto/presupuesto.html.twig', [
+            'presupuesto' => $presupuesto,
+        ]);
     }
 
     /**

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ManoDeObraMaterial
  *
- * @ORM\Table()
+ * @ORM\Table(name="mano_de_obra_material")
  * @ORM\Entity
  */
 class ManoDeObraMaterial
@@ -24,14 +24,14 @@ class ManoDeObraMaterial
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="ManosDeObra",  inversedBy="materiales")
+     * @ORM\ManyToOne(targetEntity="K2\PresupuestoBundle\Entity\ManoDeObra")
      */
     private $manoDeObra;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Materiales")
+     * @ORM\ManyToOne(targetEntity="K2\PresupuestoBundle\Entity\Material")
      */
     private $material;
 
@@ -45,7 +45,7 @@ class ManoDeObraMaterial
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Unidades")
+     * @ORM\ManyToOne(targetEntity="K2\PresupuestoBundle\Entity\Unidad")
      */
     private $defaultUnidad;
 

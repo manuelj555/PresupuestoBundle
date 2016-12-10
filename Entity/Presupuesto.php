@@ -3,21 +3,17 @@
 namespace K2\PresupuestoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use K2\PresupuestoBundle\Entity\DescripcionPresupuestos;
+use K2\PresupuestoBundle\Entity\DescripcionPresupuesto;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
-use JMS\Serializer\Annotation\VirtualProperty;
+use Doctrine\ORM\EntityManager;
 
 /**
- * Presupuestos
- * 
- * @ExclusionPolicy("all")
+ * Presupuesto
  *
- * @ORM\Table(name="presupuestos")
+ * @ORM\Table(name="presupuesto")
  * @ORM\Entity(repositoryClass="PresupuestoRepository")
  */
-class Presupuestos
+class Presupuesto
 {
 
     /**
@@ -26,7 +22,6 @@ class Presupuestos
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Expose
      */
     private $id;
 
@@ -34,7 +29,6 @@ class Presupuestos
      * @var string
      *
      * @ORM\Column(name="titulo", type="string", length=100, nullable=true)
-     * @Expose
      */
     private $titulo;
 
@@ -42,7 +36,6 @@ class Presupuestos
      * @var float
      *
      * @ORM\Column(name="total", type="float", nullable=true)
-     * @Expose
      */
     private $total;
 
@@ -63,11 +56,8 @@ class Presupuestos
     /**
      *
      * @var
-     * @ignoreAnnotation("ORM")
-     * @ORM\OneToMany(targetEntity="DescripcionPresupuestos", mappedBy="presupuesto", cascade={"persist", "remove"}, orphanRemoval=true) 
+     * @ORM\OneToMany(targetEntity="K2\PresupuestoBundle\Entity\DescripcionPresupuesto", mappedBy="presupuesto", cascade={"persist", "remove"})
      * @ORM\OrderBy({"posicion":"ASC"})
-     * 
-     * @Expose
      */
     private $descripciones;
 
@@ -90,7 +80,7 @@ class Presupuestos
      * Set titulo
      *
      * @param string $titulo
-     * @return Presupuestos
+     * @return Presupuesto
      */
     public function setTitulo($titulo)
     {
@@ -113,7 +103,7 @@ class Presupuestos
      * Set total
      *
      * @param float $total
-     * @return Presupuestos
+     * @return Presupuesto
      */
     public function setTotal($total)
     {
@@ -136,7 +126,7 @@ class Presupuestos
      * Set fechaAt
      *
      * @param \DateTime $fechaAt
-     * @return Presupuestos
+     * @return Presupuesto
      */
     public function setFechaAt($fechaAt)
     {
@@ -159,7 +149,7 @@ class Presupuestos
      * Set fechaIn
      *
      * @param \DateTime $fechaIn
-     * @return Presupuestos
+     * @return Presupuesto
      */
     public function setFechaIn($fechaIn)
     {
@@ -195,30 +185,29 @@ class Presupuestos
         }
     }
 
-    /**
-     * Add descripciones
-     *
-     * @param \K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones
-     * @return Presupuestos
-     */
-    public function addDescripcione(\K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones)
+    public function guardar(EntityManager $em, $descripcionesOriginales)
     {
-        $this->descripciones[] = $descripciones;
-        
-        $descripciones->setPresupuesto($this);
-    
-        return $this;
+        $total = 0;
+
+        foreach ($this->getDescripciones() as $des) {
+            $des->calculateSubtotal();
+            $total += $des->getSubtotal();
+            foreach ($descripcionesOriginales as $key => $actual) {
+                if ($actual->getId() === $des->getId()) {
+                    //si la descripcion que viene del form está ya está persistida,
+                    //la quito de las que se eliminarán de la bd
+                    unset($descripcionesOriginales[$key]);
+                }
+            }
+        }
+
+        //eliminamos las originales que no se enviaron en el form
+        foreach ($descripcionesOriginales as $des) {
+            $des->setPresupuesto(null);
+        }
+
+        $this->setTotal($total);
+        $em->persist($this);
     }
 
-    /**
-     * Remove descripciones
-     *
-     * @param \K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones
-     */
-    public function removeDescripcione(\K2\PresupuestoBundle\Entity\DescripcionPresupuestos $descripciones)
-    {
-        $this->descripciones->removeElement($descripciones);
-        
-        $descripciones->setPresupuesto(null);
-    }
 }

@@ -1,7 +1,7 @@
 {% extends "PresupuestoBundle::base.html.twig" %}
 
 {% block titulo %}
-Materiales del Sistema
+Material del Sistema
 <a class="pull-right btn-primary btn" href="{{ path('materiales_crear') }}">Agregar</a>
 {% endblock %}
 
@@ -37,7 +37,7 @@ Materiales del Sistema
         {% else %}
         <tr>
             <td colspan="100">
-                No exisen Materiales
+                No exisen Material
             </td>
         </tr>
         {% endfor %}

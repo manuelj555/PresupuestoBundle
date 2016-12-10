@@ -5,12 +5,12 @@ namespace K2\PresupuestoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Medidas
+ * Medida
  *
- * @ORM\Table(name="medidas")
+ * @ORM\Table(name="medida")
  * @ORM\Entity
  */
-class Medidas
+class Medida
 {
     /**
      * @var integer
@@ -36,22 +36,6 @@ class Medidas
     private $descripcion;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_at", type="date", nullable=true)
-     */
-    private $fechaAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_in", type="date", nullable=true)
-     */
-    private $fechaIn;
-
-
-
-    /**
      * Get id
      *
      * @return integer 
@@ -65,7 +49,7 @@ class Medidas
      * Set medida
      *
      * @param string $medida
-     * @return Medidas
+     * @return Medida
      */
     public function setMedida($medida)
     {
@@ -88,7 +72,7 @@ class Medidas
      * Set descripcion
      *
      * @param string $descripcion
-     * @return Medidas
+     * @return Medida
      */
     public function setDescripcion($descripcion)
     {
@@ -111,7 +95,7 @@ class Medidas
      * Set fechaAt
      *
      * @param \DateTime $fechaAt
-     * @return Medidas
+     * @return Medida
      */
     public function setFechaAt($fechaAt)
     {
@@ -134,7 +118,7 @@ class Medidas
      * Set fechaIn
      *
      * @param \DateTime $fechaIn
-     * @return Medidas
+     * @return Medida
      */
     public function setFechaIn($fechaIn)
     {

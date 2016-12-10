@@ -2,7 +2,7 @@
 
 namespace K2\PresupuestoBundle\Controller;
 
-use K2\PresupuestoBundle\Entity\Materiales;
+use K2\PresupuestoBundle\Entity\Material;
 use K2\PresupuestoBundle\Model\MaterialManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -34,7 +34,7 @@ class MaterialController extends Controller
      */
     public function crearAction(Request $request)
     {
-        $material = new Materiales();
+        $material = new Material();
 
         $manager = $this->get('presupuesto.material_manager');
         /* @var $manager MaterialManager */
@@ -60,10 +60,10 @@ class MaterialController extends Controller
     /**
      * @param Request $request
      * 
-     * @ParamConverter("material", class="PresupuestoBundle:Materiales")
+     * @ParamConverter("material", class="PresupuestoBundle:Material")
      * @Template()
      */
-    public function editarAction(Request $request, Materiales $material)
+    public function editarAction(Request $request, Material $material)
     {
         $manager = $this->get('presupuesto.material_manager');
         /* @var $manager MaterialManager */

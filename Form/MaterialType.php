@@ -37,7 +37,7 @@ class MaterialType extends AbstractType
         parent::setDefaultOptions($resolver);
 
         $resolver->setDefaults(array(
-            'data_class' => 'K2\\PresupuestoBundle\\Entity\\Materiales',
+            'data_class' => 'K2\\PresupuestoBundle\\Entity\\Material',
         ));
     }
 

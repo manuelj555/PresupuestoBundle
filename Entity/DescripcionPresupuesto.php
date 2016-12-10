@@ -5,12 +5,12 @@ namespace K2\PresupuestoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * DescripcionPresupuestos
+ * DescripcionPresupuesto
  *
- * @ORM\Table(name="descripcion_presupuestos")
+ * @ORM\Table(name="descripcion_presupuesto")
  * @ORM\Entity
  */
-class DescripcionPresupuestos
+class DescripcionPresupuesto
 {
 
     /**
@@ -58,12 +58,9 @@ class DescripcionPresupuestos
     private $subtotal;
 
     /**
-     * @var \Presupuestos
+     * @var \Presupuesto
      *
-     * @ORM\ManyToOne(targetEntity="Presupuestos", inversedBy="descripciones")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_presupuesto", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="K2\PresupuestoBundle\Entity\Presupuesto", inversedBy="descripciones")
      */
     private $presupuesto;
 
@@ -81,7 +78,7 @@ class DescripcionPresupuestos
      * Set posicion
      *
      * @param integer $posicion
-     * @return DescripcionPresupuestos
+     * @return DescripcionPresupuesto
      */
     public function setPosicion($posicion)
     {
@@ -104,7 +101,7 @@ class DescripcionPresupuestos
      * Set descripcion
      *
      * @param string $descripcion
-     * @return DescripcionPresupuestos
+     * @return DescripcionPresupuesto
      */
     public function setDescripcion($descripcion)
     {
@@ -127,7 +124,7 @@ class DescripcionPresupuestos
      * Set cantidad
      *
      * @param string $cantidad
-     * @return DescripcionPresupuestos
+     * @return DescripcionPresupuesto
      */
     public function setCantidad($cantidad)
     {
@@ -150,7 +147,7 @@ class DescripcionPresupuestos
      * Set precio
      *
      * @param string $precio
-     * @return DescripcionPresupuestos
+     * @return DescripcionPresupuesto
      */
     public function setPrecio($precio)
     {
@@ -173,7 +170,7 @@ class DescripcionPresupuestos
      * Set subtotal
      *
      * @param string $subtotal
-     * @return DescripcionPresupuestos
+     * @return DescripcionPresupuesto
      */
     public function setSubtotal($subtotal)
     {
@@ -195,10 +192,10 @@ class DescripcionPresupuestos
     /**
      * Set idPresupuesto
      *
-     * @param \K2\PresupuestoBundle\Entity\Presupuestos $idPresupuesto
-     * @return DescripcionPresupuestos
+     * @param \K2\PresupuestoBundle\Entity\Presupuesto $idPresupuesto
+     * @return DescripcionPresupuesto
      */
-    public function setPresupuesto(\K2\PresupuestoBundle\Entity\Presupuestos $presupuesto = null)
+    public function setPresupuesto(\K2\PresupuestoBundle\Entity\Presupuesto $presupuesto = null)
     {
         $this->presupuesto = $presupuesto;
 
@@ -208,7 +205,7 @@ class DescripcionPresupuestos
     /**
      * Get idPresupuesto
      *
-     * @return \K2\PresupuestoBundle\Entity\Presupuestos 
+     * @return \K2\PresupuestoBundle\Entity\Presupuesto
      */
     public function getPresupuesto()
     {

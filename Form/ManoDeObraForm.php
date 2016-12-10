@@ -27,7 +27,7 @@ class ManoDeObraForm extends AbstractType
                 ))
                 ->add('medidas', 'entity', array(
                     'label' => "Unidad de Medida",
-                    'class' => "K2\\PresupuestoBundle\\Entity\\Medidas",
+                    'class' => "K2\\PresupuestoBundle\\Entity\\Medida",
                     'property' => 'medida',
                     'error_bubbling' => true,
                     'attr' => array(
@@ -36,7 +36,7 @@ class ManoDeObraForm extends AbstractType
                 ))
                 ->add('tiposDeObras', 'entity', array(
                     'label' => "Tipo",
-                    'class' => "K2\\PresupuestoBundle\\Entity\\TiposDeObras",
+                    'class' => "K2\\PresupuestoBundle\\Entity\\TipoDeObra",
                     'property' => 'nombre',
                     'error_bubbling' => true,
                     'attr' => array(

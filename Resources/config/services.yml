@@ -45,5 +45,5 @@ services:
           - {name: form.type, alias: presupuesto}
         arguments:
             - @doctrine.orm.entity_manager
-            - @jms_serializer
+#            - @jms_serializer
           

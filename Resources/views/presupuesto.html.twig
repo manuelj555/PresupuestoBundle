@@ -1,0 +1,14 @@
+{% extends '@Presupuesto/base.html.twig' %}
+
+{% block cuerpo %}
+    <div id="presupuesto">
+        {{ '{{ name }}' }}
+
+        <App api-url="test" />
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

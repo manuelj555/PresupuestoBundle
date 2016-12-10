@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use K2\PresupuestoBundle\Util\StringUtil;
 
 /**
- * Materiales
+ * Material
  *
- * @ORM\Table()
+ * @ORM\Table(name="material")
  * @ORM\Entity
  */
-class Materiales
+class Material
 {
 
     /**
@@ -46,7 +46,7 @@ class Materiales
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="Unidades", mappedBy="material", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="K2\PresupuestoBundle\Entity\Unidad", mappedBy="material", orphanRemoval=true)
      */
     private $unidades;
 
@@ -64,7 +64,7 @@ class Materiales
      * Set nombre
      *
      * @param string $nombre
-     * @return Materiales
+     * @return Material
      */
     public function setNombre($nombre)
     {
@@ -88,7 +88,7 @@ class Materiales
      * Set identificador
      *
      * @param string $identificador
-     * @return Materiales
+     * @return Material
      */
     public function setIdentificador($identificador)
     {
@@ -111,7 +111,7 @@ class Materiales
      * Set precio
      *
      * @param string $precio
-     * @return Materiales
+     * @return Material
      */
     public function setPrecio($precio)
     {
@@ -147,7 +147,7 @@ class Materiales
      * Add unidades
      *
      * @param \K2\PresupuestoBundle\Entity\Unidades $unidades
-     * @return Materiales
+     * @return Material
      */
     public function addUnidade(\K2\PresupuestoBundle\Entity\Unidades $unidades)
     {

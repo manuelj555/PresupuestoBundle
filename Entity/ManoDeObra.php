@@ -5,20 +5,15 @@ namespace K2\PresupuestoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContext;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
-use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
- * ManosDeObra
+ * ManoDeObra
  *
  * @Assert\Callback(methods={"esPrecioFloat"})
- * @ORM\Table(name="manos_de_obra")
+ * @ORM\Table(name="mano_de_obra")
  * @ORM\Entity(repositoryClass="ManoDeObraRepository")
- * 
- * @ExclusionPolicy("all")
  */
-class ManosDeObra {
+class ManoDeObra {
 
     /**
      * @var integer
@@ -26,8 +21,6 @@ class ManosDeObra {
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * 
-     * @Expose
      */
     private $id;
 
@@ -36,8 +29,6 @@ class ManosDeObra {
      *
      * @ORM\Column(name="descripcion", type="string", length=300, nullable=false)
      * @Assert\NotBlank(message="La descripción no puede estar vacía")
-     * 
-     * @Expose
      */
     private $descripcion;
 
@@ -47,55 +38,25 @@ class ManosDeObra {
      * @ORM\Column(name="precio", type="float", nullable=false)
      * @Assert\NotBlank(message="El Precio no puede estar vacío")
      * @ Assert\Type(type="float", message="El precio debe ser un número")
-     * 
-     * @Expose
      */
     private $precio;
 
     /**
-     * @var \DateTime
+     * @var TipoDeObra
      *
-     * @ORM\Column(name="fecha_at", type="date", nullable=true)
+     * @ORM\ManyToOne(targetEntity="K2\PresupuestoBundle\Entity\TipoDeObra")
      */
-    private $fechaAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_in", type="date", nullable=true)
-     */
-    private $fechaIn;
-
-    /**
-     * @var TiposDeObras
-     *
-     * @ORM\ManyToOne(targetEntity="TiposDeObras")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tipos_de_obras_id", referencedColumnName="id")
-     * })
-     */
-    private $tiposDeObras;
+    private $tipoDeObra;
 
     /**
      * @var \Medidas
      *
-     * @ORM\ManyToOne(targetEntity="Medidas")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="medidas_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="K2\PresupuestoBundle\Entity\Medida")
      */
-    private $medidas;
-    
-    /**
-     *
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\OneToMany(targetEntity="ManoDeObraMaterial", mappedBy="manoDeObra", orphanRemoval=true)
-     */
-    private $materiales;
+    private $medida;
 
     function __construct() {
         $this->fechaAt = $this->fechaIn = new \DateTime('now');
-        $this->materiales = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -111,7 +72,7 @@ class ManosDeObra {
      * Set descripcion
      *
      * @param string $descripcion
-     * @return ManosDeObra
+     * @return ManoDeObra
      */
     public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
@@ -132,7 +93,7 @@ class ManosDeObra {
      * Set precio
      *
      * @param float $precio
-     * @return ManosDeObra
+     * @return ManoDeObra
      */
     public function setPrecio($precio) {
         $this->precio = $precio;
@@ -153,7 +114,7 @@ class ManosDeObra {
      * Set fechaAt
      *
      * @param \DateTime $fechaAt
-     * @return ManosDeObra
+     * @return ManoDeObra
      */
     public function setFechaAt($fechaAt) {
         $this->fechaAt = $fechaAt;
@@ -174,7 +135,7 @@ class ManosDeObra {
      * Set fechaIn
      *
      * @param \DateTime $fechaIn
-     * @return ManosDeObra
+     * @return ManoDeObra
      */
     public function setFechaIn($fechaIn) {
         $this->fechaIn = $fechaIn;
@@ -193,7 +154,7 @@ class ManosDeObra {
 
     /**
      * 
-     * @return TiposDeObras
+     * @return TipoDeObra
      */
     public function getTiposDeObras() {
         return $this->tiposDeObras;
@@ -201,9 +162,9 @@ class ManosDeObra {
 
     /**
      * 
-     * @param \K2\PresupuestoBundle\Entity\TiposDeObras $tiposDeObras
+     * @param \K2\PresupuestoBundle\Entity\TipoDeObra $tiposDeObras
      */
-    public function setTiposDeObras(TiposDeObras $tiposDeObras) {
+    public function setTiposDeObras(TipoDeObra $tiposDeObras) {
         $this->tiposDeObras = $tiposDeObras;
 
         return $this;
@@ -212,10 +173,10 @@ class ManosDeObra {
     /**
      * Set medidas
      *
-     * @param \K2\PresupuestoBundle\Entity\Medidas $medidas
-     * @return ManosDeObra
+     * @param \K2\PresupuestoBundle\Entity\Medida $medidas
+     * @return ManoDeObra
      */
-    public function setMedidas(\K2\PresupuestoBundle\Entity\Medidas $medidas = null) {
+    public function setMedidas(\K2\PresupuestoBundle\Entity\Medida $medidas = null) {
         $this->medidas = $medidas;
 
         return $this;
@@ -224,7 +185,7 @@ class ManosDeObra {
     /**
      * Get medidas
      *
-     * @return \K2\PresupuestoBundle\Entity\Medidas 
+     * @return \K2\PresupuestoBundle\Entity\Medida
      */
     public function getMedidas() {
         return $this->medidas;
@@ -235,51 +196,5 @@ class ManosDeObra {
             $context->addViolationAtPath("precio", "El precio debe ser un número válido");
         }
     }
-    
-    /**
-     * 
-     * @VirtualProperty
-     */
-    public function getMedidaName()
-    {
-        return $this->medidas->getDescripcion();
-    }
 
-
-    /**
-     * Add materiales
-     *
-     * @param \K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales
-     * @return ManosDeObra
-     */
-    public function addMateriale(\K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales)
-    {
-        $this->materiales[] = $materiales;
-        
-        $materiales->setManoDeObra($this);
-    
-        return $this;
-    }
-
-    /**
-     * Remove materiales
-     *
-     * @param \K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales
-     */
-    public function removeMateriale(\K2\PresupuestoBundle\Entity\ManoDeObraMaterial $materiales)
-    {
-        $this->materiales->removeElement($materiales);
-        
-        $materiales->setManoDeObra(null);
-    }
-
-    /**
-     * Get materiales
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMateriales()
-    {
-        return $this->materiales;
-    }
 }

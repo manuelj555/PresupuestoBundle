@@ -2,7 +2,7 @@
 
 namespace K2\PresupuestoBundle\Model;
 
-use K2\PresupuestoBundle\Entity\Materiales;
+use K2\PresupuestoBundle\Entity\Material;
 use K2\PresupuestoBundle\Form\MaterialType;
 
 /**
@@ -11,7 +11,7 @@ use K2\PresupuestoBundle\Form\MaterialType;
 class MaterialManager extends AbstractManager
 {
 
-    public function persist(Materiales $material)
+    public function persist(Material $material)
     {
         $this->em->persist($material);
 
